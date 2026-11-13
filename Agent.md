@@ -16,7 +16,7 @@ Arbeitsordner für den **DDS-Seminarvortrag** (Data Distribution Service) im Mod
 - **Abgabe Unterlagen:** Freitag, **08.01.2027, 10:00** via Ilias
 - **Team:** 4 Personen, 80 Minuten (4 × 12 min + 32 min Diskussion)
 - **These/Thema:** DDS für **Smart Factory / Motion Control**, mit Architektur **und** Anwendungsbeispiel
-- **Zeitplan:** `01_plan/Timeline.md` ist die maßgebliche Planungsdatei.
+- **Zeitplan:** `Timeline.md` (im Projekt-Root) ist die maßgebliche Planungsdatei.
 
 Es gibt hier **noch keinen Code und kein Build-System**. Neue Inhalte werden als Markdown, DOCX, PPTX, PDF, UML-Export oder C++-Demo abgelegt.
 
@@ -40,9 +40,9 @@ Es gibt hier **noch keinen Code und kein Build-System**. Neue Inhalte werden als
 
 | Ordner | Inhalt | Aktuell |
 |---|---|---|
-| `01_plan/` | Timeline, Exposé, Entscheidungen, Meeting-Notizen, Legacy-Kontext | `Timeline.md`, `legacy_Readme_Altteam.txt`, `legacy_Anmerkungen_Kreiser.txt` |
+| `01_plan/` | Exposé, Entscheidungen, Meeting-Notizen, Legacy-Kontext | `Projektvarianten.md`, `Expose_v0.1.md`, `Agenda_80min.md`, `legacy_Readme_Altteam.txt`, `legacy_Anmerkungen_Kreiser.txt` |
 | `02_quellen/` | OMG-Specs, Tutorials, Papers, Quellenregister, Exzerpte | 3 Legacy-PDFs |
-| `03_architektur/` | UML-Diagramme (Component/Deployment/Sequence), Architekturentscheidungen, Exporte | leer |
+| `03_architektur/` | UML-Diagramme (Component/Deployment/Sequence), Architekturentscheidungen, Exporte | `Variante_A_Krankenhaus_Architektur_v0.1.md`, `Variante_B_Assembly_Zelle_Architektur_v0.1.md` |
 | `04_demo/` | Fast-DDS-Demo, IDL, QoS-XML, README, Setup, Backup-Video | `legacy_FastDDS_Anleitung.docx` |
 | `05_unterlagen/` | Ausarbeitung, Abschnitte, Glossar, finale PDF-Quelle | 4 Legacy-DOCX |
 | `06_folien/` | Foliensatz, Master, Sprechskripte, Probeversionen | `legacy_DDS_Praesentation_4Teile.pptx`, `legacy_Drehbuch_Teil4.docx` |
@@ -150,7 +150,7 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 | A = Architektur-Kern + Beispiel | Ja | offen |
 | Demo-Implementierung | Fast DDS (Alternative: Cyclone DDS) | offen |
 | Umfang Unterlagen | 15–20 Seiten + Anhang | offen |
-| Diskussionsformat | ein 32-min-Block | offen |
+| Diskussionsformat | 4 × (12 + 8), Alternative: 48 + 32 | offen |
 | UML-Werkzeug | Visual Paradigm, Export PNG/SVG | offen |
 | Genaues Zeitfenster 11.01. | beim Lehrstuhl erfragen | offen |
 
@@ -158,12 +158,14 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 
 ## 10. Nächste Schritte
 
-1. `01_plan/Timeline.md` lesen und bestätigen.
-2. Team-Kickoff terminieren; Rollen A/B/C/D fixieren.
-3. `02_quellen/Quellenregister.md` anlegen; Legacy-PDFs als Startpunkt eintragen.
-4. Exposé mit H1–H3 und Smart-Factory-Zelle erstellen.
-5. Alte PPTX nur als Struktur lesen; mit dem Neuaufbau für die Zelle beginnen.
-6. Fast-DDS-Demo aus der Legacy-Anleitung ableiten und gegen die aktuelle Dokumentation prüfen.
+1. `Timeline.md` lesen und bestätigen.
+2. **Variante entschieden:** B (Assembly-Zelle) mit A als Kontrast. Details in `01_plan/Projektvarianten.md`.
+3. `01_plan/Expose_v0.1.md` prüfen; offene Punkte in Abschnitt 12 bis zum Scope-Freeze klären.
+4. `01_plan/Agenda_80min.md` prüfen; Diskussionsformat (4 × 12+8 oder 48+32) festlegen.
+5. Team-Kickoff terminieren; Rollen A/B/C/D personell besetzen.
+6. `02_quellen/Quellenregister.md` anlegen; Legacy-PDFs durch aktuelle OMG-Versionen ersetzen.
+7. Alte PPTX nur als Struktur lesen; mit dem Neuaufbau für die Zelle beginnen.
+8. Fast-DDS-Demo aus der Legacy-Anleitung ableiten und gegen die aktuelle Dokumentation prüfen.
 
 ---
 

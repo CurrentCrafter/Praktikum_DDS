@@ -3,8 +3,8 @@
 **Stand:** 13.11.2026  
 **Vortrag:** Montag, 11.01.2027 (Seminar 4)  
 **Abgabe der finalen Unterlagen:** Freitag, 08.01.2027, 10:00 via Ilias  
-**Team:** 4 Personen · 80 Minuten (4 × 12 min Vortrag + 32 min Diskussion)  
-**Thema:** DDS (Data Distribution Service) für Smart Factory / Motion Control
+**Team:** 4 Personen · 80 Minuten (4 × 12 min Vortrag + 4 × 8 min Diskussion)  
+**Thema:** DDS (Data Distribution Service) für Smart Factory / Motion Control — Variante B (Assembly-Zelle) mit A (Krankenhaus) als Kontrast
 
 > **Legende:** A = du (Architektur + roter Faden) · B = QoS/Real-Time/TSN · C = Security/Deployment · D = Vergleich/Demo/Fazit  
 > **Status:** `[ ]` offen · `[~]` in Arbeit · `[x]` erledigt
@@ -37,7 +37,7 @@
 
 | ID | Datum | Meilenstein | Ergebnis | Owner | Status |
 |---|---|---|---|---|---|
-| M1 | 20.11.2026 | Kickoff + Exposé | 1 Seite: Scope, 3 Thesen, Beispielzelle, Rollen | A | [ ] |
+| M1 | 20.11.2026 | Kickoff + Exposé | 1 Seite: Scope, 3 Thesen, Beispielzelle, Rollen | A | [~] |
 | M2 | 27.11.2026 | Scope-Freeze | Beispielspezifikation, QoS-Tabelle v0.1, Quellenregister v1, Implementierungsentscheidung | A + B + D | [ ] |
 | M3 | 04.12.2026 | Review #1 | Abschnittsentwürfe B/C/D, Foliengerüst, Demo-Hello-World | alle | [ ] |
 | M4 | 11.12.2026 | Architektur v1 | Component-, Deployment-, Sequence-Diagramm, IDL-Typen | A + C | [ ] |
@@ -220,6 +220,84 @@ gantt
     Vortrag                     :milestone, m6, 2027-01-11, 0d
 ```
 
+### 4.1 Detail-Gantt nach Arbeitspaketen
+
+Der Überblicks-Gantt oben zeigt die Meilensteine. Der folgende Detail-Gantt zeigt zusätzlich die parallelen Arbeitspakete pro Person und die externen Praktikumstermine.
+
+```mermaid
+gantt
+    title DDS-Seminar — Detailplan nach Arbeitspaketen
+    dateFormat  YYYY-MM-DD
+    axisFormat  %d.%m.
+    tickInterval 1week
+
+    section Meilensteine
+    Exposé                      :milestone, ms1, 2026-11-20, 0d
+    Scope-Freeze                :milestone, ms2, 2026-11-27, 0d
+    Review 1                    :milestone, ms3, 2026-12-04, 0d
+    Review 2                    :milestone, ms4, 2026-12-18, 0d
+    Content-Freeze              :milestone, ms5, 2026-12-22, 0d
+    Finales PDF                 :milestone, ms6, 2027-01-07, 0d
+    Upload                      :milestone, ms7, 2027-01-08, 0d
+    Vortrag                     :milestone, ms8, 2027-01-11, 0d
+
+    section Vorbereitung
+    Kickoff + Exposé            :v1, 2026-11-13, 8d
+    Recherche + Quellen         :v2, 2026-11-16, 12d
+    Beispiel + QoS-Tabelle      :v3, 2026-11-23, 5d
+    Architektur v0.1            :v4, 2026-11-23, 5d
+
+    section Entwurf
+    Abschnittsentwürfe B/C/D    :e1, 2026-11-30, 5d
+    Foliengerüst                :e2, 2026-11-30, 5d
+    Demo Hello World            :e3, 2026-11-30, 5d
+    Architekturdiagramme v1     :e4, 2026-12-07, 5d
+    Unterlagen v0.5             :e5, 2026-12-07, 5d
+    Demo QoS                    :e6, 2026-12-07, 5d
+    Vollentwurf v1.0            :e7, 2026-12-14, 5d
+    Demo v1 + Backup            :e8, 2026-12-14, 5d
+    Zitierprüfung               :e9, 2026-12-14, 5d
+
+    section Freeze und Pause
+    Feedback + Freeze           :f1, 2026-12-21, 2d
+    Weihnachtspause             :f2, 2026-12-23, 12d
+
+    section Endphase
+    Endkorrektur + Layout       :g1, 2027-01-04, 4d
+    Generalprobe 1              :g2, 2027-01-05, 1d
+    Generalprobe 2              :g3, 2027-01-08, 1d
+    Puffer + Technikcheck       :g4, 2027-01-09, 2d
+
+    section Praktikum blockiert
+    Praktikum 23.11.           :milestone, p1, 2026-11-23, 0d
+    Praktikum 07.12.           :milestone, p2, 2026-12-07, 0d
+    Praktikum 21.12.           :milestone, p3, 2026-12-21, 0d
+
+    section A Architektur
+    DCPS/RTPS + Beispiel        :a1, 2026-11-23, 12d
+    Integration Unterlagen      :a2, 2026-12-07, 12d
+    Layout + Upload             :a3, 2027-01-04, 5d
+
+    section B QoS/Real-Time
+    Recherche QoS/TSN           :b1, 2026-11-16, 12d
+    QoS-Abschnitt               :b2, 2026-11-30, 12d
+    Latenzbudget + TSN          :b3, 2026-12-07, 12d
+
+    section C Security/Deployment
+    Recherche Security          :c1, 2026-11-16, 12d
+    Security-Abschnitt          :c2, 2026-11-30, 12d
+    Threat + Deployment         :c3, 2026-12-07, 12d
+
+    section D Vergleich/Demo
+    Vergleichsrecherche         :d1, 2026-11-16, 12d
+    Vergleichstabelle           :d2, 2026-11-30, 12d
+    Demo + Backup               :d3, 2026-11-30, 19d
+    Fazit + Ausblick            :d4, 2026-12-14, 5d
+```
+
+> **Hinweis:** Der Detail-Gantt ist eine Planungshilfe. Die harten Termine stehen in Abschnitt 1 und 2; bei Verzug gilt der Wochenplan in Abschnitt 3.
+
+
 ---
 
 ## 5. Arbeitspakete pro Person
@@ -256,12 +334,13 @@ gantt
 
 ## 7. Offene Entscheidungen
 
-| Enscheidung | Empfehlung | Status |
+| Entscheidung | Empfehlung | Status |
 |---|---|---|
-| A = Architektur-Kern + Beispiel? | Ja | [ ] |
+| Projektvariante | B (Assembly-Zelle) mit A (Krankenhaus) als Kontrast | [x] |
+| A = Architektur-Kern + Beispiel? | Ja | [x] |
 | DDS-Implementierung | eProsima Fast DDS (Alternative: Cyclone DDS) | [ ] |
 | Umfang Unterlagen | 15–20 Seiten + Anhang | [ ] |
-| Diskussionsformat | ein 32-min-Block | [ ] |
+| Diskussionsformat | 4 × (12 + 8), Alternative: 48 + 32 | [ ] |
 | UML-Werkzeug | Visual Paradigm, Export PNG/SVG | [ ] |
 | Sprache | Deutsch | [ ] |
 | Genaues Zeitfenster am 11.01. | beim Lehrstuhl erfragen | [ ] |
@@ -271,8 +350,10 @@ gantt
 
 ## 8. Nächste Schritte
 
-- [ ] Plan v1.0 bestätigen
-- [ ] Ordnerstruktur anlegen: `01_plan`, `02_quellen`, `03_architektur`, `04_demo`, `05_unterlagen`, `06_folien`, `07_qa`
-- [ ] Exposé-Gerüst mit H1–H3 erstellen
+- [x] Plan v1.0 bestätigen
+- [x] Ordnerstruktur anlegen: `01_plan`, `02_quellen`, `03_architektur`, `04_demo`, `05_unterlagen`, `06_folien`, `07_qa`
+- [x] Exposé-Gerüst mit H1–H3 erstellen
+- [x] Smart-Factory-Zelle skizzieren
+- [x] 80-Minuten-Agenda erstellen
 - [ ] Quellenregister starten
-- [ ] Smart-Factory-Zelle skizzieren
+- [ ] Team-Kickoff terminieren und Rollen A–D besetzen
