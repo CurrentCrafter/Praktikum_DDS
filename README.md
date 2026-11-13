@@ -10,6 +10,9 @@ Seminarprojekt zu **Data Distribution Service (DDS)** im Modul QEKS/SEKM bei Pro
 
 
 > Empfohlene Benutzeroberfläche: VSCodium mit mermaid plugin (Natürlich unter Linux)
+
+
+> Bitte arbeitet in eigenen Branches und mercht erst bei Bedarf - so vermeiden wir Konflikte
 ---
 
 ## Inhaltsverzeichnis
