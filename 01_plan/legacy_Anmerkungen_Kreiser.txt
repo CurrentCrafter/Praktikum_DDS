@@ -1,0 +1,15 @@
+Folie 49: Stateless/Stateful RTPS-Writer/-Reader
+Die Proxys merken sich Zustände. "Daten 1,2,3 gesendet" ist kein Zustand. Das war zu Abstrakt beschrieben. Es
+gibt dazu spezielle Zustände. 
+
+Das wurde abgefragt vom Kreiser zum RTPS-Teil:
+Frage:
+Ist der Datenaustausch zwischen einem DataWriter und mehreren DataReadern ein Austausch per Unicast?
+Also der eine DataWriter sendet seine Daten per Unicast jeweils an die einzelnen DataReader?
+
+Antwort: 
+Ja, generell werden Nutzdaten immer per Unicast gesendet, egal wie viele DataReader mit dem Writer
+verbunden sind. Jedoch kann man speziell in FastDDS auch das mit multicast machen (Einstellungssache), 
+damit man Rechenleistung spart.
+Denn wenn der Writer immer die Daten einzeln über Unicast an die Reader senden muss, dann verbraucht des extrem 
+viele Ressourcen, wenn wir viele Reader an einem Writer haben. 
