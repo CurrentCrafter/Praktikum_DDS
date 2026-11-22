@@ -70,10 +70,10 @@ Falls das Team eine gemeinsame Diskussion bevorzugt:
 
 | Min | Inhalt | Kernbotschaft |
 |---|---|---|
-| 0–2 | Zelle als verteiltes System: sechs Teilnehmer, vier Probleme | „Die Zelle ist längst verteilt — nur nicht sauber." |
+| 0–2 | Zelle als verteiltes System: fachliche Komponenten und vier Architekturprobleme | „Die Zelle ist längst verteilt — nur nicht sauber." |
 | 2–4 | Anforderungen: Echtzeit, Heterogenität, Entkopplung, Wandlungsfähigkeit | Anforderungen sind der Maßstab, nicht das Werkzeug |
 | 4–8 | DDS-Kern: Global Data Space, DomainParticipant, Publisher/Writer, Subscriber/Reader, Topic, Discovery, RTPS | DDS ist ein Datenraum, kein Nachrichtenkanal |
-| 8–11 | Mapping auf die Zelle: Domains, Topics, Rollen | dieselbe Mechanik, konkrete Verantwortlichkeiten |
+| 8–11 | Mapping auf die Zelle: Komponenten, Topics und DDS-Entities; UMAA als kurzer Transferhinweis | dieselbe Mechanik, konkrete Verantwortlichkeiten; Transfer ohne zweite Fallarchitektur |
 | 11–12 | Übergabe an B | „Ob das trägt, entscheidet QoS." |
 
 **Folien:** 8–10. **Muss-Folie:** Topic-/Teilnehmer-Matrix. **Verzichtsliste:** keine RTPS-Paketdetails (gehört zu B).

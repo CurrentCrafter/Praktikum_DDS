@@ -1,6 +1,6 @@
 # Agent.md — DDS-Seminar (WS 2026/27)
 
-**Stand:** 13.11.2026  
+**Stand:** 22.11.2026  
 **Übergeordnet:** `../AGENTS.md` (Kurskorpus SEKM) — zuerst lesen.  
 **Zweck:** Orientierung für Agenten, die in `Praktikum_DDS/` am DDS-Seminar arbeiten.
 
@@ -15,7 +15,7 @@ Arbeitsordner für den **DDS-Seminarvortrag** (Data Distribution Service) im Mod
 - **Vortrag:** Montag, **11.01.2027**, Seminar 4
 - **Abgabe Unterlagen:** Freitag, **08.01.2027, 10:00** via Ilias
 - **Team:** 4 Personen, 80 Minuten (4 × 12 min + 32 min Diskussion)
-- **These/Thema:** DDS für **Smart Factory / Motion Control**, mit Architektur **und** Anwendungsbeispiel
+- **These/Thema:** DDS-Referenzarchitektur anhand der **Assembly-Zelle**; UMAA für unbemannte maritime Fahrzeuge als kurzer Transferfall
 - **Zeitplan:** `Timeline.md` (im Projekt-Root) ist die maßgebliche Planungsdatei.
 
 Es gibt hier **noch keinen Code und kein Build-System**. Neue Inhalte werden als Markdown, DOCX, PPTX, PDF, UML-Export oder C++-Demo abgelegt.
@@ -42,7 +42,7 @@ Es gibt hier **noch keinen Code und kein Build-System**. Neue Inhalte werden als
 |---|---|---|
 | `01_plan/` | Exposé, Entscheidungen, Meeting-Notizen, Legacy-Kontext | `Projektvarianten.md`, `Expose_v0.1.md`, `Agenda_80min.md`, `legacy_Readme_Altteam.txt`, `legacy_Anmerkungen_Kreiser.txt` |
 | `02_quellen/` | OMG-Specs, Tutorials, Papers, Quellenregister, Exzerpte | 3 Legacy-PDFs |
-| `03_architektur/` | UML-Diagramme (Component/Deployment/Sequence), Architekturentscheidungen, Exporte | `Variante_A_Krankenhaus_Architektur_v0.1.md`, `Variante_B_Assembly_Zelle_Architektur_v0.1.md` |
+| `03_architektur/` | Grundlagen, gewählte Assembly-Architektur, ausgeschlossener Krankenhausentwurf | `Architektur_Grundlagen.md`, `Variante_B_Assembly_Zelle_Architektur_v0.1.md`, ausgeschlossene `Variante_A_Krankenhaus_Architektur_v0.1.md` |
 | `04_demo/` | Fast-DDS-Demo, IDL, QoS-XML, README, Setup, Backup-Video | `legacy_FastDDS_Anleitung.docx` |
 | `05_unterlagen/` | Ausarbeitung, Abschnitte, Glossar, finale PDF-Quelle | 4 Legacy-DOCX |
 | `06_folien/` | Foliensatz, Master, Sprechskripte, Probeversionen | `legacy_DDS_Praesentation_4Teile.pptx`, `legacy_Drehbuch_Teil4.docx` |
@@ -115,7 +115,9 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 - **QoS:** u. a. Reliability, Durability, History, Deadline, LatencyBudget, Ownership, Liveliness, Partition, ResourceLimits; RxO-Matching.
 - **RTPS/DDSI:** standardisiertes Wire-Protokoll, dezentrale Discovery (SPDP/SEDP), keine zentrale Broker-Instanz.
 - **Security:** DDS Security als Erweiterung (Authentication, Access Control, Cryptography, Logging); nicht mit der Basis-DDS-Spezifikation verwechseln.
-- **Beispiel:** Roboter-Assembly-Zelle mit 5 Teilnehmern (Robotersteuerung, Vision, Motion/PLC, Edge-Gateway, MES) und 3 QoS-Klassen (Regelung, Telemetrie, Alarme/Ereignisse).
+- **Hauptbeispiel:** Roboter-Assembly-Zelle mit Robotersteuerung, Vision, Motion/PLC und Edge; MES-Grenze und Zuordnung zu DDS-`DomainParticipant`s werden in AP2 festgelegt. Safety wird als separater Pfad behandelt.
+- **Transferfall:** UMAA als modulare Softwarearchitektur für unbemannte maritime Fahrzeuge; nicht als zweite vollständige Beispielarchitektur ausarbeiten.
+- **Ausgeschlossen:** Krankenhaus als aktiver Vortragsfall und autonomes Fahren.
 - **Drei Thesen:** H1 datenzentrische Entkopplung, H2 QoS ist die Architektur, H3 DDS passt für viele-zu-viele-Echtzeitdaten, nicht für jeden Request/Response-Fall.
 
 ---
@@ -139,7 +141,7 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 - Quellenregister: `02_quellen/Quellenregister.md` mit Citation-Key, Typ, Fundstelle, Relevanz.
 - Diagramme: bearbeitbare Quelle **und** Export (PNG/SVG) in `03_architektur/`.
 - Demo: Code, `README.md`, IDL, QoS-XML und ggf. Backup-Video in `04_demo/`; keine Build-Artefakte einchecken.
-- Q&A: `07_qa/Fragenbank.md`, sortiert nach A/B/C/D-Themen.
+- AP1-Scope- und Härtungsfragen: `DDS_offene_Fragen.md`; die spätere, vollständige Q&A-Bank ist für `07_qa/Fragenbank.md` vorgesehen.
 
 ---
 
@@ -147,7 +149,7 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 
 | Entscheidung | Empfehlung | Status |
 |---|---|---|
-| A = Architektur-Kern + Beispiel | Ja | offen |
+| A = Architektur-Kern + Beispiel | Ja, Assembly-Zelle plus knapper UMAA-Transfer | entschieden |
 | Demo-Implementierung | Fast DDS (Alternative: Cyclone DDS) | offen |
 | Umfang Unterlagen | 15–20 Seiten + Anhang | offen |
 | Diskussionsformat | 4 × (12 + 8), Alternative: 48 + 32 | offen |
@@ -159,7 +161,7 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 ## 10. Nächste Schritte
 
 1. `Timeline.md` lesen und bestätigen.
-2. **Variante entschieden:** B (Assembly-Zelle) mit A als Kontrast. Details in `01_plan/Projektvarianten.md`.
+2. **Scope entschieden:** Assembly-Zelle als Hauptfall, UMAA als kurzer Transfer. Krankenhaus und autonomes Fahren sind ausgeschlossen; Details in `01_plan/Projektvarianten.md`.
 3. `01_plan/Expose_v0.1.md` prüfen; offene Punkte in Abschnitt 12 bis zum Scope-Freeze klären.
 4. `01_plan/Agenda_80min.md` prüfen; Diskussionsformat (4 × 12+8 oder 48+32) festlegen.
 5. Team-Kickoff terminieren; Rollen A/B/C/D personell besetzen.

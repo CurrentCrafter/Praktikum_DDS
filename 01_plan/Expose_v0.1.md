@@ -1,24 +1,24 @@
 # Exposé v0.1 — DDS für eine modulare Roboter-Assembly-Zelle
 
-**Stand:** 13.11.2026
-**Status:** Entwurf, Grundlage für Kickoff und Scope-Freeze
-**Gewählte Variante:** B (Assembly-Zelle), Variante A (Krankenhaus) nur als kurzer Kontrast
+**Stand:** 22.11.2026
+**Status:** Entwurf; AP1-Scope festgelegt, AP2-Teilnehmer- und Datenflussdetails offen
+**Gewählter Scope:** DDS-Referenzarchitektur anhand der Assembly-Zelle; UMAA als kurzer Transferfall
 **Vortrag:** Montag, 11.01.2027 · **Abgabe:** Freitag, 08.01.2027, 10:00 via Ilias
 **Team:** 4 Personen · 80 Minuten (4 × 12 min Vortrag + 4 × 8 min Diskussion)
 
-> Dieses Exposé ist die Arbeitsgrundlage. Es enthält bewusst offene Punkte (Abschnitt 12), die bis zum Scope-Freeze am 27.11.2026 entschieden werden müssen.
+> Dieses Exposé ist die Arbeitsgrundlage. Der Fall-Scope ist festgelegt: Assembly-Zelle als Hauptbeispiel, UMAA als Transferfall. Teilnehmerliste, MES-Grenze und Datenflüsse werden in AP2 weiter konkretisiert.
 
 ---
 
 ## 1. Ausgangslage und Problem
 
-Eine modulare Roboter-Assembly-Zelle besteht aus Komponenten unterschiedlicher Hersteller: Robotersteuerung, Vision-System, Motion-/PLC-Controller, Safety-Steuerung, Edge-Gateway und MES-Anbindung. Diese Komponenten müssen zyklisch Zustände, Trajektorien, Bildergebnisse, Alarme und Telemetrie austauschen.
+Eine modulare Roboter-Assembly-Zelle besteht aus Komponenten unterschiedlicher Hersteller: Robotersteuerung, Vision-System, Motion-/PLC-Controller, Safety-Steuerung, Edge-Gateway und MES-Anbindung. Die DDS-relevanten Zellkomponenten tauschen Betriebszustände, Trajektorien, Bildergebnisse, Alarme und Telemetrie aus. Die Safety-Funktion ist separat abgegrenzt; die MES-Anbindung endet in dieser AP1-Sicht am Edge-Gateway.
 
 Dabei treten vier Probleme gleichzeitig auf:
 
 1. **Heterogenität** — unterschiedliche Betriebssysteme, Rechenleistung und Programmiersprachen.
-2. **Echtzeit** — Regel- und Sicherheitsdaten haben Fristen im Millisekundenbereich.
-3. **Kopplung** — klassische Client/Server- oder Broker-Architekturen erzeugen einen zentralen Ausfallpunkt und einen zusätzlichen Hop.
+2. **Zeitverhalten** — ausgewählte Bewegungs- und Zustandsdaten haben enge Aktualitäts- oder Fristanforderungen; funktionale Safety ist separat zu behandeln.
+3. **Kopplung** — zentralisierte Client/Server- oder Broker-Entwürfe können einen zusätzlichen Hop und einen zentralen Ausfallpunkt erzeugen; das ist ein Architekturtrade-off, keine Eigenschaft jedes Broker-Systems.
 4. **Wandlungsfähigkeit** — Zellen werden umgebaut, Komponenten ersetzt, Werkstücke gewechselt.
 
 DDS (Data Distribution Service, OMG) adressiert diese Probleme mit einem **datenzentrischen** Modell: Teilnehmer publizieren und abonnieren typisierte Topics in einem Global Data Space, ohne sich gegenseitig zu kennen. **QoS** legt fest, welche Eigenschaften der Datenstrom haben muss. **RTPS** definiert das Wire-Protokoll, **DDS Security** ergänzt Authentifizierung, Zugriffskontrolle und Verschlüsselung.
@@ -39,7 +39,7 @@ DDS entkoppelt Teilnehmer in **Raum** (keine Adresskenntnis), **Zeit** (Durabili
 
 ### H2 — QoS ist die eigentliche Architektur; Default-QoS ist ein Entwurfsfehler
 
-Die fachlichen Anforderungen der Zelle (Fristen, Verlusttoleranz, Aktualität, Sicherheitsrelevanz) werden **nicht** im Code, sondern in QoS-Profilen entschieden. Ein `JointState` mit Reliable/KeepAll ist genauso falsch wie ein `SafetyStatus` mit BestEffort.
+Die fachlichen Anforderungen der Zelle (Fristen, Verlusttoleranz, Aktualität und History) bestimmen die Auswahl der QoS-Policies und werden nicht durch QoS ersetzt. Ein `JointState` mit `Reliable`/`KeepAll` kann ebenso unpassend sein wie ein nicht nachgelieferter Alarm; jede Wahl braucht eine Anforderungsbegründung. Safety-Daten sind nicht Teil dieser DDS-QoS-Beispiele.
 
 *Prüfzugang:* QoS-Tabelle pro Topic; RxO-Matching; Demo mit zwei Profilen; Begründung jeder QoS-Achse.
 
@@ -55,22 +55,21 @@ DDS ist stark bei zyklischen, multicastfähigen Datenströmen mit vielen Teilneh
 
 **Zelle:** modulare Assembly-Zelle mit Roboter, Vision, Motion/PLC, Safety, Edge und MES.
 
-**Teilnehmer und Rollen:**
+**Fachliche Komponenten und Datenflüsse:** Die Komponenten sind keine Festlegung auf gleich viele DDS-`DomainParticipant`s; die Prozesszuordnung wird im Deployment begründet.
 
-| Teilnehmer | Rolle | Publiziert | Abonniert |
+| Komponente | Rolle | Publiziert | Abonniert |
 |---|---|---|---|
 | Robotersteuerung (RC) | Bahnplanung, Zellsteuerung | `Trajectory`, `Alarm` | `JointState`, `VisionResult` |
 | Vision-System | Lage-/Qualitätsprüfung | `VisionResult` | — |
-| Motion/PLC | Achsregelung, Zyklus | `JointState`, `SafetyStatus`, `Telemetry` | `Trajectory` |
-| Safety-Steuerung | sicherheitsgerichteter Status | `SafetyStatus` | — |
-| Edge-Gateway | Filter, Puffer, Analytik | `Telemetry` | `JointState`, `SafetyStatus`, `Alarm`, `Telemetry` |
-| MES/Cloud | Aufträge, Auswertung | — | `Telemetry` (über Edge) |
+| Motion/PLC | Achsregelung, Zyklus | `JointState`, `DeviceTelemetry`, ggf. `Alarm` | `Trajectory` |
+| Safety-Steuerung | Sicherheitsfunktion über separaten Safety-Pfad | kein DDS-Topic in dieser Architektur | kein DDS-Topic in dieser Architektur |
+| Edge-Gateway | Filter, Puffer, Analytik | externe `CellSummary`-Übergabe (Protokoll offen) | `JointState`, `DeviceTelemetry`, `Alarm` |
+| MES/Cloud | Aufträge, Auswertung | außerhalb der Zell-DDS-Domain; Anbindung über Edge | außerhalb der Zell-DDS-Domain; Protokoll offen |
 
 **Domains und Partitionen:**
 
-- `cell.assembly` — harter Regel- und Sicherheitskontext der Zelle
-- `line.assembly` — Koordination mehrerer Zellen
-- `edge.telemetry` — Monitoring, Analytik, MES
+- `cell.assembly` — betrachtete logische Kommunikationsdomäne; keine Safety-Zertifizierungsgrenze
+- Weitere Domains/Partitions für Linie oder Edge werden nur bei begründetem Isolationsbedarf festgelegt.
 
 Partitionen trennen Stationen (Roboter, Vision, Transport) innerhalb einer Domain, ohne zusätzliche Netze.
 
@@ -78,14 +77,13 @@ Partitionen trennen Stationen (Roboter, Vision, Transport) innerhalb einer Domai
 
 | Topic | Key | QoS-Klasse | Kernbegründung |
 |---|---|---|---|
-| `JointState` | `axis_id` | BestEffort, KeepLast(1), Deadline 1–5 ms | Zyklisch, altes Sample ist wertlos |
-| `Trajectory` | `robot_id` | Reliable, KeepLast(1), Deadline 10 ms | Muss vollständig ankommen |
-| `VisionResult` | `part_id` | Reliable, KeepLast(1), Deadline 50–100 ms | Ergebnis muss zum Werkstück passen |
-| `SafetyStatus` | `cell_id` | Reliable, TransientLocal, Deadline 10 ms, Liveliness | Darf nicht verloren gehen |
-| `Alarm` | `alarm_id` | Reliable, TransientLocal, Deadline 50 ms | Späte Teilnehmer sehen den letzten Alarm |
-| `Telemetry` | `device_id` | BestEffort, KeepLast(1) | Monitoring verträgt Verluste |
+| `JointState` | `axis_id` | BestEffort, KeepLast(1); Deadline als zu prüfendes Ziel | Zyklische Zustandsdaten; Aktualität kann wichtiger sein als Nachlieferung |
+| `Trajectory` | `robot_id` | Reliable, begrenzte History; Deadline als zu prüfendes Ziel | Vollständigkeits- und Gültigkeitsanforderungen fachlich spezifizieren |
+| `VisionResult` | `part_id` | Reliable, begrenzte History; Frist pro Prozess festzulegen | Ergebnis muss zum Werkstück/Zyklus passen |
+| `Alarm` | `alarm_id` | Reliable; Durability/History anhand des Alarm-Lebenszyklus festlegen | Aufbewahrung und späte Leser fachlich entscheiden |
+| `DeviceTelemetry` | `device_id` | BestEffort, KeepLast(1) als Startannahme | Monitoring kann Verluste je nach Nutzung tolerieren |
 
-> Die Werte sind **Zielwerte für die Diskussion**, keine Messwerte. Ob sie in der Zelle realistisch sind, wird im Vortrag ausdrücklich als Annahme gekennzeichnet.
+> Die Policy-Auswahl und etwaige Zahlenwerte sind **Entwurfshypothesen**, keine Messwerte oder Garantien. Zahlenwerte benötigen eine fachliche Frist-/Zyklusanforderung und Validierung. Safety-Traffic ist ausdrücklich ausgeschlossen.
 
 ---
 
@@ -104,7 +102,7 @@ Der Seminar-Brief verlangt eine Bewertung an allgemeinen Qualitätsmerkmalen. Di
 | Daten- und Systemsicherheit | Domain-/Partition-Isolation, Encryption | Schlüsselverwaltung, Audit, Kompatibilität |
 | Anpassbarkeit | QoS-Profile, XML-Konfiguration | Profilvielfalt wird unübersichtlich |
 | Testbarkeit | Reproduzierbare QoS, Logging | Verteilte Fehler sind schwer zu reproduzieren |
-| Offenheit/Zukunftsfähigkeit | OMG-Standard, Interoperabilität, ROS 2, AUTOSAR AP | Vendor-Interoperabilität in der Praxis prüfen |
+| Offenheit/Zukunftsfähigkeit | OMG-Standard, Interoperabilität und dokumentierte Profile | Vendor-Interoperabilität in der Praxis prüfen |
 
 ---
 
@@ -119,7 +117,7 @@ DDS ist nicht die einzige Antwort auf verteilte Automation. Der Vortrag vergleic
 | MQTT | Broker-basiert, Topics | einfach, Cloud-nah, breite Toolbasis | zentraler Broker, QoS nur grob, Latenz |
 | SOME/IP | serviceorientiert, Automotive | harte Echtzeit im Fahrzeug, AUTOSAR-Nähe | Automations-/IT-Integration, Ökosystem |
 
-**Variante A (Krankenhaus)** dient nur als kurzer Kontrast in der Einleitung oder Diskussion: gleiche DDS-Mechanismen, andere Anforderungen (Datenschutz, Verfügbarkeit, Regulatorik). Sie ist **kein** zweiter Fall im Hauptteil.
+**UMAA-Transfer:** Eine öffentliche UMAA-Beschreibung benennt OMG DDS als Kernbestandteil der Kommunikation zwischen Autonomie-Komponenten an Bord unbemannter maritimer Fahrzeuge [UMAA]. Das dient als knapper Transferbeleg für modulare DDS-Architektur, nicht als zweite vollständige Architektur. Krankenhaus und autonomes Fahren gehören nicht zum Vortragsscope.
 
 ---
 
@@ -131,7 +129,7 @@ Zielumfang: 15–20 Seiten plus Anhang; ohne weitere Zusatzliteratur verständli
 |---|---|---|
 | 1 | Einleitung: Zelle als verteiltes Echtzeitsystem, Leitfrage | 1–2 |
 | 2 | DDS-Grundlagen: DCPS, Global Data Space, Discovery, RTPS | 3 |
-| 3 | Architektur der Zelle: Domains, Partitionen, Topics, Komponenten | 3 |
+| 3 | Architektur der Zelle: Komponenten, DDS-Entities, Topics und Datenflüsse; UMAA-Transfer in Kurzform | 3 |
 | 4 | QoS und Echtzeit: Achsen, RxO, Deadline, Latenzbudget, TSN | 3 |
 | 5 | Security: Bedrohungsmodell, DDS Security, Zero-Trust, Grenzen | 2–3 |
 | 6 | Deployment: Embedded, Edge, MES, Ressourcen, Redundanz | 2 |
@@ -178,7 +176,7 @@ Geplante Quellenarten (konkrete Einträge folgen im Quellenregister):
 - **OMG-Spezifikationen:** DDS 1.4, DDSI-RTPS (aktuelle Version prüfen; die Legacy-Version 2.1 von 2010 ist veraltet), DDS Security 1.1, IDL 4.2.
 - **Normen:** IEEE 802.1Q (TSN: Qbv, Qav, Qcc), IEC 61131, IEC 61508/ISO 13849 für die Safety-Abgrenzung.
 - **Lehrbuch-/Paper-Basis:** POSA 4 (Distributed Computing), Tanenbaum/van Steen, Publikationen zu DDS-QoS und TSN/DDS-Integration.
-- **Ökosystem-Belege:** ROS 2 (DDS als Middleware), AUTOSAR Adaptive Platform (DDS-Binding) — jeweils gegen die Primärquelle prüfen, nicht gegen Blogposts.
+- **[UMAA] Use-case-Transfer:** AUVSI, **Unmanned Maritime Autonomy Architecture (UMAA)**: <https://www.auvsi.org/advocacy/advocacy-initiatives/unmanned-maritime-autonomy-architecture/>; NAVSEA, **UMAA Compliance Specification, T0300-BE-IDS-010 Rev. 1**: <https://www.auvsi.org/wp-content/uploads/2025/03/T0300-BE-IDS-010-Rev.-1.pdf>. Öffentliche Quellen; Aussageumfang auf das Dokumentierte begrenzen.
 - **Vendor-Dokumentation:** Fast DDS, Cyclone DDS, RTI Connext — nur für Implementierungsdetails, nicht als Architekturbeleg.
 
 Legacy-Material (`legacy_*`) wird **nicht** zitiert.
@@ -191,7 +189,7 @@ Legacy-Material (`legacy_*`) wird **nicht** zitiert.
 |---|---|---|
 | Thema zu breit (DDS + TSN + Security + Vergleich) | vier oberflächliche Teile | feste Seiten- und Minutenbudgets pro Teil; Vergleich auf eine Tabelle begrenzen |
 | Keine Messwerte für Echtzeit | Behauptungen statt Belege | Werte als Annahmen kennzeichnen; Demo zeigt Verhalten, nicht Latenzgarantien |
-| Legacy-Nähe kippt in Nachbau | Eigenständigkeitsverlust | neues Beispiel, neue Quellen, neue Diagramme; A nur als Kontrast |
+| Use-case-Vergleich wird zu breit | Architekturteil verliert roten Faden | Assembly-Zelle vollständig ausarbeiten; UMAA nur als kurzen Transfer; Krankenhaus und autonomes Fahren auslassen |
 | Demo scheitert live | Vortragsabbruch | Video-Backup, Code-Ausschnitte, zweites Gerät |
 | Security wird juristisch | Fokusverlust | Security auf Architektur und Bedrohungsmodell begrenzen |
 | Terminkollision mit Praktikum | Zeitverlust | Praktikumstage 23.11., 07.12., 21.12. sind für das Seminar gesperrt |
@@ -222,12 +220,12 @@ Vollständiger Plan: [`../Timeline.md`](../Timeline.md).
 
 ---
 
-## 12. Offene Punkte bis zum Scope-Freeze
+## 12. Offene Detailpunkte bis zum Scope-Freeze
 
 1. **Fast DDS oder Cyclone DDS** — Entscheidung anhand von Build-Aufwand und Dokumentationsqualität.
 2. **TSN-Tiefe** — eigene Folie mit 802.1Qbv/Qav oder nur als Architekturbemerkung?
 3. **Safety-Abgrenzung** — wie viel IEC 61508/ISO 13849 ist nötig, ohne das Thema zu sprengen?
-4. **Variante A als Kontrast** — eine Folie in der Einleitung oder ein Diskussionsimpuls?
+4. **UMAA-Transfer** — konkrete Fundstellen der öffentlichen Architektur-/Compliance-Unterlagen im Quellenregister erfassen; keine zweite Architektur ausarbeiten.
 5. **Umfang der Demo** — nur `JointState`/`Alarm` oder zusätzlich `VisionResult`?
 6. **Messwerte** — gibt es eine kleine Latenzmessung auf dem Desktop, die als Indiz (nicht als Garantie) taugt?
 7. **Quellenversionen** — aktuelle OMG-Versionen und TSN-Normenstände prüfen und im Register festhalten.

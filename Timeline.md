@@ -1,10 +1,10 @@
 # Timeline — DDS-Seminar (WS 2026/27)
 
-**Stand:** 13.11.2026  
+**Stand:** 22.11.2026  
 **Vortrag:** Montag, 11.01.2027 (Seminar 4)  
 **Abgabe der finalen Unterlagen:** Freitag, 08.01.2027, 10:00 via Ilias  
 **Team:** 4 Personen · 80 Minuten (4 × 12 min Vortrag + 4 × 8 min Diskussion)  
-**Thema:** DDS (Data Distribution Service) für Smart Factory / Motion Control — Variante B (Assembly-Zelle) mit A (Krankenhaus) als Kontrast
+**Thema:** DDS-Referenzarchitektur anhand der Assembly-Zelle; UMAA als kurzer Transferfall. Krankenhaus und autonomes Fahren ausgeschlossen.
 
 > **Legende:** A = du (Architektur + roter Faden) · B = QoS/Real-Time/TSN · C = Security/Deployment · D = Vergleich/Demo/Fazit  
 > **Status:** `[ ]` offen · `[~]` in Arbeit · `[x]` erledigt
@@ -336,7 +336,7 @@ gantt
 
 | Entscheidung | Empfehlung | Status |
 |---|---|---|
-| Projektvariante | B (Assembly-Zelle) mit A (Krankenhaus) als Kontrast | [x] |
+| Projekt-Scope | Assembly-Zelle als Hauptfall; UMAA als kurzer Transfer | [x] |
 | A = Architektur-Kern + Beispiel? | Ja | [x] |
 | DDS-Implementierung | eProsima Fast DDS (Alternative: Cyclone DDS) | [ ] |
 | Umfang Unterlagen | 15–20 Seiten + Anhang | [ ] |

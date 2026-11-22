@@ -1,11 +1,11 @@
-# Variante A — Architektur v0.1: DDS im automatisierten Krankenhaus
+# Ausgeschlossener Entwurf — Variante A: DDS im automatisierten Krankenhaus
 
-**Status:** erster Mermaid-Entwurf, nicht final  
+**Status:** nicht Teil des gewählten Seminar-Scopes; als früher Entwurf unverändert im Arbeitsordner aufbewahrt  
 **Grundlage:** `01_plan/Projektvarianten.md`, Variante A  
 **Domäne:** automatisiertes Krankenhaus (Vitaldaten, Alarme, Geräteintegration)  
 **Ziel:** Architekturstruktur für den Seminarvortrag und die schriftlichen Unterlagen
 
-> **Hinweis:** Die Diagramme sind bewusst als erste Struktur angelegt. QoS-Werte, Sicherheitsdetails und die HL7/FHIR-Abgrenzung sind noch zu validieren.
+> **Scope-Entscheidung:** Das Krankenhausbeispiel wurde aus dem Vortrag entfernt. Hauptbeispiel ist die Assembly-Zelle; UMAA dient als kurzer Transferfall. Die folgenden Diagramme sind nicht als aktuelle oder validierte Seminararchitektur zu verwenden.
 
 ---
 

@@ -1,19 +1,22 @@
-# Variante B — Architektur v0.1: DDS für eine modulare Roboter-Assembly-Zelle
+# Architektur v0.2 — DDS in einer modularen Roboter-Assembly-Zelle
 
-**Status:** erster Mermaid-Entwurf, nicht final  
-**Grundlage:** `01_plan/Projektvarianten.md`, Variante B  
+**Status:** Hauptbeispiel für den Architekturteil, Revisionsstand v0.2; QoS und Deployment noch nicht abschließend validiert  
+**Grundlage:** gewählter Seminar-Scope, vormals `01_plan/Projektvarianten.md`, Variante B  
 **Domäne:** Smart Factory / Motion Control — Roboter, Vision, Motion/PLC, Edge, MES  
 **Ziel:** Architekturstruktur für den Seminarvortrag und die schriftlichen Unterlagen
 
-> **Hinweis:** Die Diagramme sind als erste Struktur angelegt. QoS-Werte, TSN-Annahmen und Safety-Grenzen sind noch zu validieren.
+> **Scope:** Die DDS-Referenzarchitektur wird an der Assembly-Zelle erklärt. Als kurzer Transferfall dient UMAA für unbemannte maritime Fahrzeuge: DDS ist dort laut öffentlicher UMAA-Beschreibung ein Kernbestandteil der Kommunikation zwischen Autonomiekomponenten an Bord [3][4]. UMAA erhält keine zweite vollständige Architektur.
+
+> **Abgrenzung:** Krankenhaus und autonomes Fahren sind nicht Teil des gewählten Vortragsumfangs. Die vorhandene Krankenhausdatei bleibt als ausgeschlossener Arbeitsentwurf erhalten. Eine reale Zellenimplementierung wird hier nicht behauptet; die Zelle ist ein begründetes Referenzszenario.
 
 ---
 
 ## 1. Annahmen
 
-- DDS ist die Kommunikationsschicht; es gibt **keinen zentralen Broker**.
-- Domains sind logisch getrennt: `cell.assembly`, `line.assembly`, `edge.telemetry`.
-- Safety wird als eigener, zertifizierter Pfad betrachtet; DDS Security ersetzt keine Safety-Zertifizierung.
+- DDS/DCPS stellt die datenzentrische Publish/Subscribe-Kommunikation bereit. Für das Beispiel wird kein zentraler Nachrichtenbroker als Vermittler angenommen; Discovery und Deployment sind implementierungs- und konfigurationsabhängig.
+- Die Darstellung fokussiert auf `cell.assembly`. Weitere Domains oder Partitions werden nicht ohne konkreten Isolationsbedarf vorausgesetzt.
+- Die Safety-Funktion liegt außerhalb der dargestellten DDS-Datenflüsse. Eine etwaige Statusweitergabe über DDS wäre nicht-sicherheitsgerichtete Diagnoseinformation und ist hier nicht modelliert.
+- Die MES-Anbindung endet in dieser AP1-Sicht an der Edge-Grenze. MES wird nicht als DDS-Teilnehmer der Zell-Domain angenommen; das externe Protokoll ist noch festzulegen.
 - Die Demo zeigt einen Ausschnitt (JointState, Trajectory, Alarm), nicht die gesamte Zelle.
 
 ---
@@ -23,24 +26,23 @@
 ```mermaid
 flowchart TB
     subgraph CELL["Zelle cell.assembly"]
-        RC["Robotersteuerung<br/>Trajectory / JointState"]
-        VIS["Vision<br/>VisionResult"]
-        MOT["Motion/PLC<br/>JointState / SafetyStatus"]
-        SAF["Safety-Steuerung<br/>SafetyStatus"]
+        RC["Robotersteuerung<br/>plant Trajektorie; liest Zustand und Visionsergebnis"]
+        VIS["Vision-System<br/>liefert VisionResult"]
+        MOT["Motion/PLC<br/>führt Trajektorie aus; liefert JointState"]
+        SAF["Safety-Steuerung<br/>separater Safety-Pfad"]
     end
 
-    subgraph EDGE["Edge / Line"]
-        EG["Edge-Gateway<br/>Telemetrie / Filter"]
-        MES["MES / Cloud"]
+    subgraph EDGE["Edge-Grenze"]
+        EG["Edge-Gateway<br/>liest Zustände und Alarme; bildet Zellzusammenfassung"]
+        MES["MES / IT-System<br/>außerhalb der Zell-DDS-Domain"]
     end
 
-    subgraph DDS["DDS Global Data Space"]
-        TJ[("JointState<br/>Key: axis_id")]
-        TT[("Trajectory<br/>Key: robot_id")]
-        TV[("VisionResult<br/>Key: part_id")]
-        TS[("SafetyStatus<br/>Key: cell_id")]
-        TA[("Alarm<br/>Key: alarm_id")]
-        TM[("Telemetry<br/>Key: device_id")]
+    subgraph DDS["Logisches DDS-Datenmodell — kein zentraler Speicher"]
+        TJ[("JointState<br/>Key-Vorschlag: axis_id")]
+        TT[("Trajectory<br/>Key-Vorschlag: robot_id")]
+        TV[("VisionResult<br/>Key-Vorschlag: part_id")]
+        TA[("Alarm<br/>Key-Vorschlag: alarm_id")]
+        TM[("DeviceTelemetry<br/>Key-Vorschlag: device_id")]
     end
 
     RC -->|publish| TT
@@ -53,21 +55,20 @@ flowchart TB
     VIS -->|publish| TV
     RC -->|subscribe| TV
 
-    SAF -->|publish| TS
-    MOT -->|subscribe| TS
-    EG -->|subscribe| TS
-
     RC -->|publish| TA
     MOT -->|publish| TA
     EG -->|subscribe| TA
 
     MOT -->|publish| TM
     EG -->|subscribe| TM
-    EG -->|publish| TM
-    EG --> MES
+    EG -->|CellSummary; externes Protokoll offen| MES
+
+    SAF -.->|separater Safety-Pfad| MOT
 ```
 
-**Lesart:** Die Zelle kommuniziert datenzentriert über Topics. Der Edge-Gateway konsumiert Telemetrie und Alarme, ohne in den harten Regelkreis einzugreifen.
+**Lesart:** Topic-Knoten stellen logische Datenströme dar, keinen zentralen DDS-Server oder gemeinsamen physischen Speicher. Das Edge-Gateway liest Betriebsdaten und Alarme; es publiziert im dargestellten DDS-Datenmodell nicht zurück in dieselben Topics. Der MES-Übergang ist eine Systemgrenze, keine festgelegte DDS-Verbindung. Die Safety-Linie ist separat und nicht Teil der DDS-Datenverteilung.
+
+Die Komponenten sind fachliche Rollen, nicht automatisch gleich viele DDS-`DomainParticipant`-Instanzen. Die konkrete Zuordnung von Prozessen, Geräten und `DomainParticipant`s gehört in die spätere Deployment-Entscheidung.
 
 ---
 
@@ -86,7 +87,7 @@ flowchart LR
     DR --> TOPIC
 ```
 
-Das Modell wiederholt sich für `Trajectory`, `VisionResult`, `SafetyStatus`, `Alarm` und `Telemetry`. Jede Entität besitzt eine eigene QoS-Konfiguration; Writer und Reader müssen im RxO-Matching kompatibel sein.
+Das Modell wiederholt sich für `Trajectory`, `VisionResult`, `Alarm` und `DeviceTelemetry`. Ein `Topic` benennt einen typisierten Datenstrom; es ist kein zentraler Speicherort. Die konkrete Anwendungsprozess-zu-`DomainParticipant`-Zuordnung bleibt offen. Writer und Reader benötigen kompatible QoS-Einstellungen, soweit für die jeweiligen Policies Requested/Offered Matching gilt.
 
 ---
 
@@ -94,14 +95,13 @@ Das Modell wiederholt sich für `Trajectory`, `VisionResult`, `SafetyStatus`, `A
 
 | Topic | Key | Ziel-QoS | Begründung |
 |---|---|---|---|
-| `JointState` | `axis_id` | BestEffort, KeepLast(1), Deadline 1–5 ms, TransportPriority | Zyklische Regelungsdaten; altes Sample ist wertlos |
-| `Trajectory` | `robot_id` | Reliable, KeepLast(1), Deadline 10 ms | Trajektorie muss vollständig ankommen |
-| `VisionResult` | `part_id` | Reliable, KeepLast(1), Deadline 50–100 ms | Ergebnis muss zum Werkstück passen |
-| `SafetyStatus` | `cell_id` | Reliable, TransientLocal, Deadline 10 ms, Liveliness | Sicherheitsstatus darf nicht verloren gehen |
-| `Alarm` | `alarm_id` | Reliable, TransientLocal, Deadline 50 ms | Späte Teilnehmer müssen den letzten Alarm sehen |
-| `Telemetry` | `device_id` | BestEffort, KeepLast(1), hoher Durchsatz | Monitoring verträgt Verluste |
+| `JointState` | `axis_id` | BestEffort, KeepLast(1); Deadline als zu prüfendes Ziel | Zyklische Zustandsdaten; Aktualität kann wichtiger sein als Nachlieferung |
+| `Trajectory` | `robot_id` | Reliable, begrenzte History; Deadline als zu prüfendes Ziel | Vollständigkeits- und Gültigkeitsanforderungen fachlich spezifizieren |
+| `VisionResult` | `part_id` | Reliable, begrenzte History; Frist abhängig vom Prozess | Ergebnis muss dem richtigen Werkstück/Zyklus zugeordnet sein |
+| `Alarm` | `alarm_id` | Reliable; Durability/History anhand des Alarm-Lebenszyklus festlegen | Aufbewahrung und späte Leser sind fachlich zu entscheiden |
+| `DeviceTelemetry` | `device_id` | BestEffort, KeepLast(1) als Startannahme | Monitoring kann je nach Auswertung Verluste tolerieren |
 
-> Die Werte sind **Zielwerte für die Diskussion**, keine gemessenen Garantien. TSN und DDS müssen getrennt begründet werden.
+> Die QoS-Zuordnungen sind **Entwurfshypothesen**, keine validierten Werte oder Garantien. Zahlenwerte werden erst nach Festlegung von Zyklus, Frist und Verlustverhalten eingesetzt. QoS ersetzt weder Anwendungsvalidierung noch ein Zeitbudget. TSN und DDS sind getrennt zu begründen. Safety-Traffic ist in dieser Tabelle ausdrücklich nicht enthalten.
 
 ---
 
@@ -109,34 +109,38 @@ Das Modell wiederholt sich für `Trajectory`, `VisionResult`, `SafetyStatus`, `A
 
 ```mermaid
 flowchart TB
-    subgraph CELL["Zelle"]
-        RC["Robotersteuerung<br/>RTOS"]
-        VIS["Vision<br/>Linux / GPU"]
-        MOT["Motion/PLC<br/>RTOS"]
-        SAF["Safety-Steuerung<br/>RTOS"]
+    subgraph CELL["Zelle — illustrative Deployment-Annahmen"]
+        RC["Robotersteuerung<br/>Betriebssystem offen"]
+        VIS["Vision<br/>z. B. Linux / GPU"]
+        MOT["Motion/PLC<br/>Betriebssystem offen"]
+        SAF["Safety-Steuerung<br/>separater Safety-Pfad"]
     end
 
     subgraph EDGE["Edge"]
         EG["Edge-Gateway<br/>Linux"]
     end
 
-    subgraph CLOUD["MES / Cloud"]
+    subgraph SAFE["Separater Safety-Pfad — Technologie offen"]
+        SFN["Safety-Kommunikation"]
+    end
+
+    subgraph IT["IT-System außerhalb der Zell-DDS-Domain"]
         MES["MES / Analytik"]
     end
 
-    subgraph NET["TSN-Netz"]
-        SW["TSN-Switch<br/>802.1Qbv / Qav"]
+    subgraph NET["Zellnetz — Transport und TSN-Eignung zu validieren"]
+        SW["Ethernet-Switch<br/>TSN optional; profilabhängig"]
     end
 
     RC --- SW
     VIS --- SW
     MOT --- SW
-    SAF --- SW
     SW --- EG
     EG --- MES
+    SAF --- SFN --- MOT
 ```
 
-**Anmerkung:** Safety kann physisch über ein eigenes Safety-Netzwerk laufen. Die DDS-Domain `cell.assembly` ist die logische Kommunikationsgrenze, nicht die Safety-Zertifizierungsgrenze.
+**Anmerkung:** Das Deployment ist illustrativ, nicht produkt- oder RTOS-validiert. Ein TSN-fähiger Switch allein macht den Datenpfad nicht deterministisch. Die DDS-Domain ist eine logische Kommunikationsgrenze, keine Safety-Zertifizierungsgrenze. Das MES ist außerhalb der dargestellten Zell-DDS-Domain; Protokoll und Datenabbildung am Edge sind offen.
 
 ---
 
@@ -151,20 +155,21 @@ sequenceDiagram
     participant MOT as Motion/PLC
     participant EG as Edge
 
-    VIS->>DDS: write(VisionResult, Reliable, Deadline 100ms)
+    VIS->>DDS: write(VisionResult)
     DDS-->>RC: VisionResult
     RC->>RC: Trajektorie planen
-    RC->>DDS: write(Trajectory, Reliable)
+    RC->>DDS: write(Trajectory)
     DDS-->>MOT: Trajectory
 
     loop Regelzyklus
-        MOT->>DDS: write(JointState, BestEffort, KeepLast1)
+        MOT->>DDS: write(JointState)
         DDS-->>RC: JointState
-        DDS-->>EG: JointState / Telemetry
+        MOT->>DDS: write(DeviceTelemetry)
+        DDS-->>EG: DeviceTelemetry
     end
 
-    alt Deadline verletzt
-        DDS-->>MOT: Deadline Missed
+    alt konfigurierte Deadline verfehlt
+        MOT->>MOT: lokales Deadline-Missed-Ereignis auswerten
         MOT->>DDS: write(Alarm, Reliable)
         DDS-->>EG: Alarm
     end
@@ -177,12 +182,12 @@ sequenceDiagram
 ```mermaid
 flowchart LR
     subgraph DOMAIN["DDS-Domain cell.assembly"]
-        P1["Participant<br/>Robotersteuerung"]
-        P2["Participant<br/>Vision"]
-        P3["Participant<br/>Edge"]
+        P1["DDS-Anwendungsrolle<br/>Robotersteuerung"]
+        P2["DDS-Anwendungsrolle<br/>Vision"]
+        P3["DDS-Anwendungsrolle<br/>Edge"]
     end
 
-    subgraph SEC["DDS Security"]
+    subgraph SEC["DDS Security — konfigurierte Sicherheitsfunktionen"]
         AUTH["Authentication"]
         ACL["Access Control"]
         CRYPTO["Cryptography"]
@@ -192,23 +197,41 @@ flowchart LR
     P1 --> AUTH
     P2 --> AUTH
     P3 --> AUTH
-    AUTH --> ACL
-    ACL --> CRYPTO
-    CRYPTO --> LOG
+    P1 --> ACL
+    P2 --> ACL
+    P3 --> ACL
+    P1 --> CRYPTO
+    P2 --> CRYPTO
+    P3 --> CRYPTO
+    P1 --> LOG
+    P2 --> LOG
+    P3 --> LOG
 ```
 
-**Threat-Szenario:** Ein manipulierter Participant sendet falsche `Trajectory`- oder `SafetyStatus`-Daten. Authentication und Access Control verhindern die Teilnahme; Encryption schützt die Domains; Logging macht Zugriffe nachvollziehbar.
+**Threat-Szenario:** Ein nicht autorisierter oder kompromittierter DDS-Teilnehmer versucht, `Trajectory` zu lesen oder zu publizieren. Die dargestellten Rollen sind keine Festlegung auf je einen DDS-`DomainParticipant`. Authentisierung und Zugriffskontrolle können nicht autorisierte Identitäten bzw. nicht erlaubte Datenzugriffe begrenzen; Kryptografie schützt je nach Konfiguration Vertraulichkeit und Integrität; Logging unterstützt die Nachvollziehbarkeit. Ein kompromittierter, aber autorisierter Publisher oder fachlich falsche Daten werden dadurch nicht automatisch erkannt. Der Safety-Pfad ist nicht Gegenstand dieser DDS-Skizze.
 
 **Grenze:** DDS Security schützt Vertraulichkeit, Integrität und Zugriff — nicht die funktionale Safety der Zelle.
 
 ---
 
-## 8. Offene Punkte für v0.2
+## 8. Offene Punkte für die nächste Architekturversion
 
-- Genaue Domain-/Partition-Aufteilung (Zelle, Linie, Edge).
-- QoS-Werte mit dem Team validieren; Deadline/LatencyBudget begründen.
-- TSN: Welche Traffic-Klassen, welche Zeitbudgets, welche Rolle spielt DDS darüber?
-- Safety: Wo endet DDS, wo beginnt die Safety-Steuerung?
-- Security: PKI, Zertifikatsverteilung, Schlüsselmanagement, Engineering-Zugriff.
-- Demo: nur `JointState` + `Alarm` oder zusätzlich `VisionResult`?
-- Abgrenzung zu OPC UA Pub/Sub, MQTT und SOME/IP schärfen.
+- Komponenten- und Topic-Mapping inklusive Verantwortlichkeit, Typ, Key und Leser/Schreiber abschließen.
+- MES-Schnittstelle am Edge festlegen; dabei klären, ob MES nur extern angebunden ist oder separat DDS nutzt.
+- Prozess-/Gerätezuordnung zu `DomainParticipant`, Domain und Partition begründen.
+- QoS je Datenstrom aus Zyklus, Frist, Verlusttoleranz und History-Anforderung herleiten; Zahlenwerte messen oder als Annahme kennzeichnen.
+- TSN-Einsatz, Traffic-Klassen und Zeitbudgets getrennt von DDS-QoS festlegen.
+- DDS Security Bedrohungsmodell und Autorisierungsregeln konkretisieren; kompromittierte autorisierte Teilnehmer berücksichtigen.
+- Demo-Umfang für `JointState`, `VisionResult` und `Alarm` festlegen.
+- UMAA-Transfer auf eine kurze, quellenbasierte Einordnung beschränken; keine Detailarchitektur oder operative Behauptung ergänzen.
+
+## 9. Quellen und Aussagegrenzen
+
+1. Object Management Group (OMG), **Data Distribution Service (DDS), Version 1.4**: <https://www.omg.org/spec/DDS/1.4/PDF> — Primärquelle für DCPS und DDS-Semantik.
+2. OMG, **DDS Interoperability Wire Protocol (DDSI-RTPS), Version 2.5**: <https://www.omg.org/spec/DDSI-RTPS/2.5/PDF> — Primärquelle für das Wire-Protokoll.
+3. AUVSI, **Unmanned Maritime Autonomy Architecture (UMAA)**: <https://www.auvsi.org/advocacy/advocacy-initiatives/unmanned-maritime-autonomy-architecture/> — öffentliche UMAA-Beschreibung; benennt DDS als Kernbestandteil für die Kommunikation zwischen Autonomiekomponenten an Bord und verlinkt öffentliche Compliance-Unterlagen.
+4. NAVSEA, **UMAA Compliance Specification, T0300-BE-IDS-010 Rev. 1**, 30.07.2024: <https://www.auvsi.org/wp-content/uploads/2025/03/T0300-BE-IDS-010-Rev.-1.pdf> — öffentliche Compliance-Spezifikation.
+
+**Aussagegrenze UMAA:** UMAA belegt einen konkreten Architektur-/Standardisierungseinsatz von DDS im Bereich unbemannter maritimer Autonomie. Es belegt nicht, dass DDS für jedes unbemannte Fahrzeug oder jede militärische Anwendung eingesetzt wird. Das UMAA-Beispiel dient ausschließlich dem Architekturtransfer.
+
+**Härtungsfragen für AP1:** Die vorbereiteten Professorfragen und Antwortlinien liegen in [`../DDS_offene_Fragen.md`](../DDS_offene_Fragen.md).

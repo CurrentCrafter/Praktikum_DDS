@@ -2,7 +2,7 @@
 
 Seminarprojekt zu **Data Distribution Service (DDS)** im Modul QEKS/SEKM bei Prof. Dr.-Ing. Stefan Kreiser.
 
-**Thema:** DDS für eine modulare Roboter-Assembly-Zelle — Architektur, QoS und Security (Variante B mit A als Kontrast)  
+**Thema:** DDS-Referenzarchitektur anhand einer modularen Roboter-Assembly-Zelle; UMAA als kurzer Transferfall  
 **Team:** 4 Personen · **Vortrag:** 11.01.2027 · **Abgabe:** 08.01.2027, 10:00 via Ilias  
 **Umfang:** 80 Minuten (4 × 12 min Vortrag + 4 × 8 min Diskussion)
 
@@ -32,13 +32,13 @@ Seminarprojekt zu **Data Distribution Service (DDS)** im Modul QEKS/SEKM bei Pro
 | Ich möchte … | Datei |
 |---|---|
 | den Zeitplan sehen | [`Timeline.md`](Timeline.md) |
-| zwei Projektvarianten vergleichen | [`01_plan/Projektvarianten.md`](01_plan/Projektvarianten.md) |
+| Scope-Entscheidung und früheren Variantenvergleich lesen | [`01_plan/Projektvarianten.md`](01_plan/Projektvarianten.md) |
 | das Exposé lesen | [`01_plan/Expose_v0.1.md`](01_plan/Expose_v0.1.md) |
 | den 80-Minuten-Ablauf sehen | [`01_plan/Agenda_80min.md`](01_plan/Agenda_80min.md) |
-| Architektur Variante A ansehen | [`03_architektur/Variante_A_Krankenhaus_Architektur_v0.1.md`](03_architektur/Variante_A_Krankenhaus_Architektur_v0.1.md) |
-| Architektur Variante B ansehen | [`03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`](03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md) |
+| Grundlagen und Begriffe ansehen | [`03_architektur/Architektur_Grundlagen.md`](03_architektur/Architektur_Grundlagen.md) |
+| Gewählte Assembly-Architektur ansehen | [`03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`](03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md) |
 | die Agenten-Orientierung lesen | [`Agent.md`](Agent.md) |
-| offene inhaltliche Fragen sehen | [`DDS_offene_Fragen.md`](DDS_offene_Fragen.md) |
+| Scope-Entscheidung und Architektur-Härtungsfragen lesen | [`DDS_offene_Fragen.md`](DDS_offene_Fragen.md) |
 | Quellen und Altmaterial finden | [`02_quellen/`](02_quellen/) |
 | die Ausarbeitung schreiben | [`05_unterlagen/`](05_unterlagen/) |
 | Folien bauen | [`06_folien/`](06_folien/) |
@@ -93,7 +93,7 @@ Die Projektmappe besteht aus:
 
 1. **Schriftliche Seminarunterlagen** — ohne weitere Zusatzliteratur nachvollziehbar, PDF mit hellem Hintergrund.
 2. **Foliensatz** — 4 Teile, gemeinsamer Master, 12 Minuten pro Person.
-3. **Architektur** — DDS-Referenzarchitektur plus Instanziierung in der gewählten Domäne (A: Krankenhaus, B: Roboter-Assembly-Zelle).
+3. **Architektur** — DDS-Referenzarchitektur mit vollständiger Instanziierung in der Assembly-Zelle und kurzem UMAA-Transfer.
 4. **Demo** — minimales Fast-DDS-Beispiel mit IDL, Publisher, Subscriber und QoS-XML; Backup-Video als Fallback.
 5. **Q&A-Bank** — 20–30 vorbereitete Fragen inkl. Antworten.
 
@@ -134,7 +134,7 @@ Details und Bewertung jeder Datei: [`Agent.md`](Agent.md).
 
 | Entscheidung | Empfehlung |
 |---|---|
-| Projektvariante | **entschieden:** B (Assembly-Zelle) mit A (Krankenhaus) als Kontrast |
+| Projekt-Scope | **entschieden:** Assembly-Zelle als Hauptfall, UMAA als kurzer Transfer; Krankenhaus und autonomes Fahren ausgeschlossen |
 | Anteil A = Architektur-Kern + Beispiel | Ja |
 | Demo-Implementierung | Fast DDS (Alternative: Cyclone DDS) |
 | Umfang der Unterlagen | 15–20 Seiten + Anhang |
@@ -149,7 +149,7 @@ Details und Bewertung jeder Datei: [`Agent.md`](Agent.md).
 - [x] Projektstruktur und Legacy-Sichtung
 - [x] Zeitplan und Agenten-Orientierung
 - [x] Zwei Projektvarianten erarbeitet
-- [x] Erste Mermaid-Architektur für A und B (v0.1)
+- [x] Krankenhausentwurf als ausgeschlossen markiert; Assembly-Architektur überarbeitet (v0.2)
 - [x] Exposé v0.1 und 80-Minuten-Agenda
 - [ ] Scope-Freeze
 - [ ] Architektur v1

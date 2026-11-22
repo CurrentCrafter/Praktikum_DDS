@@ -1,9 +1,11 @@
-# Zwei Projektvarianten für das DDS-Seminar
+# Historischer Variantenvergleich für das DDS-Seminar
 
-**Stand:** 13.11.2026  
+**Stand:** 22.11.2026  
 **Grundlage:** `sekm-seminar-2026.pdf`, `sekm-praktikum2026.pdf`, `DDS_alt/`, `01_plan/Timeline.md`
 
-> **Entscheidung vom 13.11.2026:** Umgesetzt wird **Variante B mit Variante A als kurzem Kontrast**. Dieses Dokument bleibt als Begründung und Vergleichsgrundlage erhalten; die Umsetzung steht in [`Expose_v0.1.md`](Expose_v0.1.md) und [`Agenda_80min.md`](Agenda_80min.md).
+> **Aktualisierte Scope-Entscheidung:** Variante B (Assembly-Zelle) bleibt das einzige vollständig ausgearbeitete Anwendungsbeispiel. UMAA für unbemannte maritime Fahrzeuge wird als kurzer Transferfall aufgenommen. Variante A (Krankenhaus) und autonomes Fahren sind nicht Teil des Vortrags. Die nachfolgende Krankenhausanalyse bleibt als frühere Planungs-/Vergleichsgrundlage erhalten, nicht als aktive Variante.
+
+> **Hinweis zur Gültigkeit:** Die folgenden Variantendetails dokumentieren den früheren Auswahlprozess. Sie sind kein Ersatz für die aktuelle Architektur in `03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`; insbesondere QoS-Zahlen, Safety-Status und Teilnehmerannahmen dort nicht ungeprüft übernehmen.
 
 > **Begriffsklärung:** „Projekt“ meint hier das **Seminarprojekt DDS** (Vortrag + Unterlagen + Demo). Das **Praktikum MPK** ist eine separate Abgabe; die DDS-Varianten liefern dafür höchstens Architekturvokabular und Demo-Erfahrung, keine gemeinsame Abgabe.
 
@@ -313,7 +315,7 @@ Eine modulare Roboter-Assembly-Zelle besteht aus Robotersteuerung, Vision, Motio
 
 - **Variante B** ist die bessere Wahl für die Bewertung: Sie erfüllt die Prof.-Vorgaben (Smart Factory/Motion Control, Echtzeit, TSN, Embedded, Security) und erlaubt echte eigene Hypothesen. Sie ist auch die konsequente Fortsetzung der bisherigen Planung (`Timeline.md`).
 - **Variante A** ist die schnellere und sicherere Variante, wenn das Team wenig Zeit hat oder bewusst an das Legacy-Material anknüpfen will. Dann muss die Eigenständigkeit aktiv abgesichert werden: neues Beispiel, neue Quellen, neue Diagramme, klare Abgrenzung.
-- **Hybrid möglich:** Variante B als Hauptgeschichte, Variante A nur als kurzer Kontrast „DDS im Krankenhaus“ in der Einleitung oder Diskussion. Das kostet wenig und zeigt Transfer.
+- **Aktualisierte Umsetzung:** Variante B als Hauptgeschichte; UMAA als knapper Transferbeleg. Die frühere Hybrididee mit dem Krankenhaus wird nicht umgesetzt.
 
 ---
 
@@ -323,8 +325,8 @@ Die ersten Mermaid-Strukturen liegen getrennt pro Variante:
 
 | Variante | Datei | Inhalt |
 |---|---|---|
-| A — Krankenhaus | [`../03_architektur/Variante_A_Krankenhaus_Architektur_v0.1.md`](../03_architektur/Variante_A_Krankenhaus_Architektur_v0.1.md) | Kontext, DDS-Modell, QoS, Deployment, Sequenz, Security |
-| B — Assembly-Zelle | [`../03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`](../03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md) | Kontext, DDS-Modell, QoS, Deployment, Sequenz, Security |
+| Ausgeschlossener Entwurf — Krankenhaus | [`../03_architektur/Variante_A_Krankenhaus_Architektur_v0.1.md`](../03_architektur/Variante_A_Krankenhaus_Architektur_v0.1.md) | Historische Arbeitsgrundlage; nicht für den Vortrag verwenden |
+| Hauptbeispiel — Assembly-Zelle | [`../03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`](../03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md) | DDS-Kontext, Datenmodell, QoS-Hypothesen, Deployment, Security und UMAA-Transfer |
 
 Beide Dateien sind Entwürfe (v0.1) und noch nicht render-geprüft. Die QoS-Werte sind Diskussionsgrundlage, keine Messwerte.
 
@@ -332,13 +334,13 @@ Beide Dateien sind Entwürfe (v0.1) und noch nicht render-geprüft. Die QoS-Wert
 
 ## 4. Nächste Entscheidung
 
-**Entschieden am 13.11.2026:** Variante **B mit A als kurzem Kontrast**.
+**Aktualisiert:** Variante **B als Hauptbeispiel**, UMAA als kurzer Transfer. Krankenhaus und autonomes Fahren sind ausgeschlossen.
 
 Erledigt:
 
-1. Variante gewählt: **B mit A als Kontrast**.
+1. Hauptbeispiel bestätigt: **Assembly-Zelle**; UMAA als knapper Transferfall ergänzt.
 2. Beispielzelle und QoS-Tabelle aus B.2 in das Exposé übernommen.
-3. Architektur v0.1 für beide Varianten angelegt (Vergleichsgrundlage bleibt erhalten).
+3. Krankenhausentwurf als nicht aktiven Entwurf gekennzeichnet; Assembly-Architektur weitergeführt.
 
 Offen:
 
@@ -346,4 +348,4 @@ Offen:
 5. Quellenregister anlegen und Legacy-PDFs durch aktuelle OMG-Versionen ersetzen.
 6. Demo-Technologie entscheiden: Fast DDS oder Cyclone DDS.
 
-**Begründung der Entscheidung:** maximale Passung zu den Prof.-Vorgaben (Smart Factory, Motion Control, Echtzeit, TSN, Embedded, Security), hohe Eigenständigkeit gegenüber dem Legacy-Material, und Variante A bleibt als bekannter Anker für das Publikum verfügbar.
+**Begründung der Entscheidung:** maximale Passung zu den Prof.-Vorgaben (Smart Factory, Motion Control, Zeitverhalten, TSN, Embedded, Security), hohe Eigenständigkeit gegenüber dem Legacy-Material und ein klar begrenzter Transfer auf UMAA, ohne eine zweite Fallarchitektur aufzubauen.
