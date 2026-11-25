@@ -234,4 +234,4 @@ flowchart LR
 
 **Aussagegrenze UMAA:** UMAA belegt einen konkreten Architektur-/Standardisierungseinsatz von DDS im Bereich unbemannter maritimer Autonomie. Es belegt nicht, dass DDS für jedes unbemannte Fahrzeug oder jede militärische Anwendung eingesetzt wird. Das UMAA-Beispiel dient ausschließlich dem Architekturtransfer.
 
-**Härtungsfragen für AP1:** Die vorbereiteten Professorfragen und Antwortlinien liegen in [`../DDS_offene_Fragen.md`](../DDS_offene_Fragen.md).
+**Härtungsfragen für AP1:** Die vorbereiteten Professorfragen und Antwortlinien liegen in [`../07_qa/Fragenbank.md`](../07_qa/Fragenbank.md). Beschlossener Scope und offene Folgearbeit stehen in [`../DDS_offene_Fragen.md`](../DDS_offene_Fragen.md).

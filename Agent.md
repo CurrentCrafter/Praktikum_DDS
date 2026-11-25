@@ -141,7 +141,7 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 - Quellenregister: `02_quellen/Quellenregister.md` mit Citation-Key, Typ, Fundstelle, Relevanz.
 - Diagramme: bearbeitbare Quelle **und** Export (PNG/SVG) in `03_architektur/`.
 - Demo: Code, `README.md`, IDL, QoS-XML und ggf. Backup-Video in `04_demo/`; keine Build-Artefakte einchecken.
-- AP1-Scope- und Härtungsfragen: `DDS_offene_Fragen.md`; die spätere, vollständige Q&A-Bank ist für `07_qa/Fragenbank.md` vorgesehen.
+- AP1-Professorfragen und Antwortlinien: `07_qa/Fragenbank.md`. Beschlossener Scope und offene Folgearbeit: `DDS_offene_Fragen.md`.
 
 ---
 

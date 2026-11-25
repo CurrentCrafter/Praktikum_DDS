@@ -33,12 +33,13 @@ Seminarprojekt zu **Data Distribution Service (DDS)** im Modul QEKS/SEKM bei Pro
 |---|---|
 | den Zeitplan sehen | [`Timeline.md`](Timeline.md) |
 | Scope-Entscheidung und früheren Variantenvergleich lesen | [`01_plan/Projektvarianten.md`](01_plan/Projektvarianten.md) |
+| vorbereitete Fragen und Antwortlinien lesen | [`07_qa/Fragenbank.md`](07_qa/Fragenbank.md) |
 | das Exposé lesen | [`01_plan/Expose_v0.1.md`](01_plan/Expose_v0.1.md) |
 | den 80-Minuten-Ablauf sehen | [`01_plan/Agenda_80min.md`](01_plan/Agenda_80min.md) |
 | Grundlagen und Begriffe ansehen | [`03_architektur/Architektur_Grundlagen.md`](03_architektur/Architektur_Grundlagen.md) |
 | Gewählte Assembly-Architektur ansehen | [`03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`](03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md) |
 | die Agenten-Orientierung lesen | [`Agent.md`](Agent.md) |
-| Scope-Entscheidung und Architektur-Härtungsfragen lesen | [`DDS_offene_Fragen.md`](DDS_offene_Fragen.md) |
+| Scope-Entscheidung und offene Folgearbeit lesen | [`DDS_offene_Fragen.md`](DDS_offene_Fragen.md) |
 | Quellen und Altmaterial finden | [`02_quellen/`](02_quellen/) |
 | die Ausarbeitung schreiben | [`05_unterlagen/`](05_unterlagen/) |
 | Folien bauen | [`06_folien/`](06_folien/) |
