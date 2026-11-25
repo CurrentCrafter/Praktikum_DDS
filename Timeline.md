@@ -1,13 +1,15 @@
 # Timeline — DDS-Seminar (WS 2026/27)
 
-**Stand:** 22.11.2026  
+**Stand:** 25.11.2026  
 **Vortrag:** Montag, 11.01.2027 (Seminar 4)  
 **Abgabe der finalen Unterlagen:** Freitag, 08.01.2027, 10:00 via Ilias  
-**Team:** 4 Personen · 80 Minuten (4 × 12 min Vortrag + 4 × 8 min Diskussion)  
-**Thema:** DDS-Referenzarchitektur anhand der Assembly-Zelle; UMAA als kurzer Transferfall. Krankenhaus und autonomes Fahren ausgeschlossen.
+**Team:** 4 Personen · 80 Minuten (48 min Vortrag + ca. 32 min Diskussion; Ablauf noch offen)  
+**Thema:** DDS-Referenzarchitektur; Assembly-Zelle und AMR-Flotte als Vergleichskandidaten, UMAA als kurzer Transferfall.
 
-> **Legende:** A = du (Architektur + roter Faden) · B = QoS/Real-Time/TSN · C = Security/Deployment · D = Vergleich/Demo/Fazit  
+> **Rollen laut Orga-Präsentation (verbindliche Aufteilung):** A = Architektur + roter Faden + Integration/Abgabe · B = Automatisierung · C = Qualitätsmerkmale · D = Zukunft + DDS-spezifische Aspekte  
 > **Status:** `[ ]` offen · `[~]` in Arbeit · `[x]` erledigt
+
+> **Planungsbasis:** Der Gantt-Plan ist gemäß Orga-Präsentation als interner Zeitplan übernommen. Die Auswahl zwischen Assembly-Zelle und AMR-Flotte steht noch aus; UMAA ist der kurze Transferfall. Reihenfolge und Diskussionsformat bleiben Vorschläge.
 
 ---
 
@@ -15,7 +17,7 @@
 
 | Datum | Was | Verbindlichkeit |
 |---|---|---|
-| **13.11.2026** | Plan v1.0, Rollen und Scope | heute |
+| **13.11.2026** | Initialer Plan v1.0 | Planungsbaseline |
 | **23.11.2026** | Praktikum | blockiert für Seminar-Deadlines |
 | **27.11.2026** | Scope-Freeze: Beispiel, Thesen, Quellen v1 | hart |
 | **04.12.2026** | Internes Review #1 | hart |
@@ -37,8 +39,8 @@
 
 | ID | Datum | Meilenstein | Ergebnis | Owner | Status |
 |---|---|---|---|---|---|
-| M1 | 20.11.2026 | Kickoff + Exposé | 1 Seite: Scope, 3 Thesen, Beispielzelle, Rollen | A | [~] |
-| M2 | 27.11.2026 | Scope-Freeze | Beispielspezifikation, QoS-Tabelle v0.1, Quellenregister v1, Implementierungsentscheidung | A + B + D | [ ] |
+| M1 | 20.11.2026 | Kickoff + Exposé | 1 Seite: Scope, 3 Thesen, Kandidaten Assembly/AMR, Rollen | A | [~] |
+| M2 | 27.11.2026 | Scope-Freeze | begründete Auswahl Assembly-Zelle vs. AMR-Flotte, Beispielspezifikation, QoS-Tabelle v0.1, Quellenregister v1, Implementierungsentscheidung | alle | [ ] |
 | M3 | 04.12.2026 | Review #1 | Abschnittsentwürfe B/C/D, Foliengerüst, Demo-Hello-World | alle | [ ] |
 | M4 | 11.12.2026 | Architektur v1 | Component-, Deployment-, Sequence-Diagramm, IDL-Typen | A + C | [ ] |
 | M5 | 18.12.2026 | Vollentwurf v1.0 | Unterlagen vollständig, Demo lauffähig, Zitierprüfung | alle | [ ] |
@@ -55,7 +57,7 @@
 **Fokus:** Entscheidungen, Plan, Team-Kickoff vorbereiten
 
 - [ ] Plan v1.0 bestätigen
-- [ ] Rollen A/B/C/D fixieren
+- [x] Thematische Rollen A/B/C/D gemäß Orga-Präsentation festlegen (bestätigt am 25.11.)
 - [ ] Termin für 60-min-Kickoff festlegen
 - [ ] Ordnerstruktur anlegen
 - [ ] Exposé-Gerüst vorbereiten
@@ -69,7 +71,7 @@
 
 - [ ] Team-Kickoff (60 min): Ziel, Scope, Rollen, Beispielzelle
 - [ ] DDS-Grundlagen gemeinsam lesen: DCPS, QoS, Discovery, RTPS
-- [ ] Smart-Factory-Zelle skizzieren: 5 Teilnehmer, Topics, Datenströme
+- [ ] Vergleichskandidaten skizzieren: Assembly-Zelle und AMR-Flotte; Anforderungen und Datenströme
 - [ ] Drei Thesen H1–H3 formulieren
 - [ ] Quellenjagd starten: OMG-Specs, Papers, Vendor-Doku
 - [ ] **M1: Exposé v1 (20.11.)**
@@ -79,13 +81,13 @@
 ---
 
 ### KW 48 — 23.11.–27.11.2026
-**Fokus:** Recherche, Architektur v0.1, Scope-Freeze  
+**Fokus:** Vergleich der Anwendungsbeispiele, Architektur v0.1, Scope-Freeze  
 **Achtung:** **23.11. Praktikum** — keine Seminar-Deadlines an diesem Tag
 
-- [ ] Architektur v0.1: Komponenten, Domains/Partitions, Topics
-- [ ] Beispielspezifikation v1: Teilnehmer, Topics, QoS-Klassen, Latenzbudget
+- [ ] Architekturansätze für Assembly-Zelle und AMR-Flotte vergleichen; UMAA nur als Transfer einordnen
+- [ ] Beispielspezifikation v1 für den ausgewählten Fall: Teilnehmer, Topics, QoS-Klassen, Zeitbudget
 - [ ] Quellenregister v1: 15–25 Quellen mit Citation-Key, Typ, Relevanz
-- [ ] Implementierung entscheiden: Fast DDS vs. Cyclone DDS
+- [ ] FOSS-DDS-Implementierung entscheiden: Fast DDS Community vs. Eclipse Cyclone DDS; Abhängigkeiten/Lizenzen prüfen
 - [ ] Demo-Hello-World vorbereiten (IDL + Pub/Sub)
 - [ ] **M2: Scope-Freeze (27.11.)**
 
@@ -96,9 +98,9 @@
 ### KW 49 — 30.11.–04.12.2026
 **Fokus:** Erste Abschnittsentwürfe, Review #1
 
-- [ ] B: QoS-/Real-Time-Abschnitt entwerfen
-- [ ] C: Security-/Deployment-Abschnitt entwerfen
-- [ ] D: Vergleichstabelle OPC UA/MQTT/SOME-IP entwerfen
+- [ ] B: Abschnitt Automatisierung entwerfen
+- [ ] C: Qualitätsmerkmale und Bewertung entwerfen
+- [ ] D: Zukunft/DDS-spezifische Aspekte strukturieren
 - [ ] A: DCPS/RTPS-Abschnitt und Beispiel-Mapping entwerfen
 - [ ] Foliengerüst pro Person (10–12 Folien)
 - [ ] Demo: erster lauffähiger Pub/Sub
@@ -114,7 +116,7 @@
 
 - [ ] Architekturdiagramme v1: Component, Deployment, Sequence, IDL/Typen
 - [ ] Unterlagen v0.5: Abschnitte zusammenführen
-- [ ] Security/TSN-Tiefe kalibrieren (nicht überladen)
+- [ ] C/D: Security- und TSN-Tiefe zwischen Qualitätsbewertung und DDS-spezifischem Teil abstimmen
 - [ ] Demo: QoS-XML, reliable vs. best-effort, Deadline
 - [ ] Quellen prüfen: mind. 2 unabhängige Quellen pro Kernaussage
 - [ ] **M4: Architektur v1 (11.12.)**
@@ -278,36 +280,39 @@ gantt
     Integration Unterlagen      :a2, 2026-12-07, 12d
     Layout + Upload             :a3, 2027-01-04, 5d
 
-    section B QoS/Real-Time
-    Recherche QoS/TSN           :b1, 2026-11-16, 12d
-    QoS-Abschnitt               :b2, 2026-11-30, 12d
-    Latenzbudget + TSN          :b3, 2026-12-07, 12d
+    section B Automatisierung
+    Recherche Automatisierung   :b1, 2026-11-16, 12d
+    Automatisierungsabschnitt   :b2, 2026-11-30, 12d
+    Anforderungen + Beispiele  :b3, 2026-12-07, 12d
 
-    section C Security/Deployment
-    Recherche Security          :c1, 2026-11-16, 12d
-    Security-Abschnitt          :c2, 2026-11-30, 12d
-    Threat + Deployment         :c3, 2026-12-07, 12d
+    section C Qualitätsmerkmale
+    Recherche Qualitätsmerkmale :c1, 2026-11-16, 12d
+    Qualitätsabschnitt          :c2, 2026-11-30, 12d
+    Bewertung + Security       :c3, 2026-12-07, 12d
 
-    section D Vergleich/Demo
-    Vergleichsrecherche         :d1, 2026-11-16, 12d
-    Vergleichstabelle           :d2, 2026-11-30, 12d
-    Demo + Backup               :d3, 2026-11-30, 19d
+    section D Zukunft/DDS-spezifisch
+    Recherche Zukunft + DDS     :d1, 2026-11-16, 12d
+    DDS-spezifische Vertiefung  :d2, 2026-11-30, 12d
+    DDS-Anwendungsbezug         :d3, 2026-11-30, 19d
     Fazit + Ausblick            :d4, 2026-12-14, 5d
 ```
 
-> **Hinweis:** Der Detail-Gantt ist eine Planungshilfe. Die harten Termine stehen in Abschnitt 1 und 2; bei Verzug gilt der Wochenplan in Abschnitt 3.
+> **Hinweis:** Der Detail-Gantt ist die übernommene Planungsbaseline. Vergangene interne Termine bleiben im Plan sichtbar; ihr Erledigungsstatus ist aus der Präsentation nicht ableitbar und muss nachgetragen werden. Bei Verzug ist der Wochenplan anzupassen.
 
 
 ---
 
-## 5. Arbeitspakete pro Person
+## 5. Arbeitspakete nach verbindlicher Rollenaufteilung
 
-| Person | Arbeitspaket | Kernartefakte | Fällig |
+> Die Themenverteilung folgt der Orga-Präsentation vom 15.11. und der anschließenden Bestätigung: A Architektur, B Automatisierung, C Qualitätsmerkmale, D Zukunft/DDS-spezifische Aspekte. Die Auswahl des Anwendungsfalls bleibt gesondert offen.
+
+| Rolle | Arbeitspaket | Kernartefakte | Fällig |
 |---|---|---|---|
-| **A** | Architektur, roter Faden, Integration, Upload | DCPS/RTPS-Abschnitt, Beispiel-Mapping, Gesamt-PDF | 18.12. / 07.01. |
-| **B** | QoS, Real-Time, TSN | QoS-Tabelle, Latenzbudget, QoS-Abschnitt | 04.12. / 11.12. |
-| **C** | Security, Deployment, Qualitätsmerkmale | Threat-Szenario, Deployment-Diagramm, Security-Abschnitt | 04.12. / 11.12. |
-| **D** | Vergleich, Demo, Fazit/Ausblick | Vergleichstabelle, Demo-Repo, Backup-Video, Fazit | 04.12. / 18.12. |
+| **A** | Architektur, roter Faden, Integration und Abgabe | DDS-/Architekturabschnitt, Vergleich des Komponenten-/Datenfluss-Mappings der Kandidaten, integrierte Unterlagen und Upload | 18.12. / 07.01. |
+| **B** | Automatisierungsbezug | Bewertung der Kandidaten anhand Echtzeit, Eventmanagement, Scheduling/Synchronisation, Embedded-HW und Heterogenität; Abschnitt Automatisierung | 04.12. / 11.12. |
+| **C** | Qualitätsmerkmale | Zuverlässigkeit, Leistung, Flexibilität, Robustheit, Verfügbarkeit, System-/Datensicherheit, Anpassbarkeit und Testbarkeit; begründete Bewertung | 04.12. / 11.12. |
+| **D** | Zukunftsfähigkeit und DDS-spezifische Aspekte | Offenheit/Zukunft, TSN, Embedded/IoT, DDS-Datensicherheit und Anwendungsbezug; Fazit/Ausblick | 04.12. / 18.12. |
+| **noch festzulegen** | Demo-Verantwortung | Demo-Scope und technische Zuständigkeit passend zum gewählten Fall bestimmen | Scope-Freeze |
 | **alle** | Unterlagen, Folien, Q&A, Proben | gemeinsamer Master, Q&A-Bank | 08.01. |
 
 ---
@@ -316,7 +321,7 @@ gantt
 
 **Kritischer Pfad:**
 
-1. Beispielspezifikation (27.11.)
+1. Vergleich und Auswahl des Anwendungsfalls; Beispielspezifikation (27.11.)
 2. Architekturdiagramme v1 (11.12.)
 3. Unterlagen v1.0 (18.12.)
 4. Content-Freeze (22.12.)
@@ -336,11 +341,13 @@ gantt
 
 | Entscheidung | Empfehlung | Status |
 |---|---|---|
-| Projekt-Scope | Assembly-Zelle als Hauptfall; UMAA als kurzer Transfer | [x] |
-| A = Architektur-Kern + Beispiel? | Ja | [x] |
-| DDS-Implementierung | eProsima Fast DDS (Alternative: Cyclone DDS) | [ ] |
+| Anwendungsfall | Assembly-Zelle vs. AMR-Flotte begründet vergleichen; UMAA kurzer Transfer | [~] |
+| Rollenaufteilung | A Architektur, B Automatisierung, C Qualitätsmerkmale, D Zukunft/DDS-spezifisch | [x] |
+| AMR-Umsetzungsprofil | direkte DDS-API ohne ROS 2 | [x] |
+| AMR-Lizenzanforderung | FOSS; kommerzielle Erweiterung keine Voraussetzung | [x] |
+| DDS-Implementierung | Fast DDS Community (Apache-2.0) vs. Eclipse Cyclone DDS (EPL-2.0/EDL-1.0) | [ ] |
 | Umfang Unterlagen | 15–20 Seiten + Anhang | [ ] |
-| Diskussionsformat | 4 × (12 + 8), Alternative: 48 + 32 | [ ] |
+| Diskussionsformat | 48 + 32 als Vorschlag der Orga-Präsentation; 4 × (12 + 8) als Alternative | [ ] |
 | UML-Werkzeug | Visual Paradigm, Export PNG/SVG | [ ] |
 | Sprache | Deutsch | [ ] |
 | Genaues Zeitfenster am 11.01. | beim Lehrstuhl erfragen | [ ] |
@@ -353,7 +360,7 @@ gantt
 - [x] Plan v1.0 bestätigen
 - [x] Ordnerstruktur anlegen: `01_plan`, `02_quellen`, `03_architektur`, `04_demo`, `05_unterlagen`, `06_folien`, `07_qa`
 - [x] Exposé-Gerüst mit H1–H3 erstellen
-- [x] Smart-Factory-Zelle skizzieren
+- [ ] Assembly-Zelle und AMR-Flotte vergleichend spezifizieren
 - [x] 80-Minuten-Agenda erstellen
 - [ ] Quellenregister starten
-- [ ] Team-Kickoff terminieren und Rollen A–D besetzen
+- [ ] Team-Kickoff terminieren; Rollen A–D sind thematisch festgelegt

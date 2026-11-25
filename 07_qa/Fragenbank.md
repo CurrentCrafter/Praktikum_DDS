@@ -1,31 +1,31 @@
 # Fragenbank — Architekturrolle A
 
-**Stand:** 23.11.2026  
-**Scope:** DDS-Referenzarchitektur anhand der Assembly-Zelle; UMAA als kurzer Transferfall
+**Stand:** 25.11.2026  
+**Scope:** Assembly-Zelle vs. AMR-Flotte vergleichen; UMAA als kurzer Transferfall
 
 Die Fragen dienen der Vorbereitung auf die Diskussion nach Rolle A. Die Antwortlinien grenzen belegte Aussagen, eigene Architekturannahmen und offene Punkte voneinander ab.
 
 ## Scope und Belege
 
 1. **Belegt die Wikipedia-Liste den DDS-Einsatz in jedem genannten Bereich?**  
-   Nein. Sie ist ein Einstieg in mögliche Anwendungsfelder, aber kein Beleg für ein konkretes System. UMAA wird anhand der öffentlichen UMAA-Beschreibung und Compliance-Unterlagen belegt; die Assembly-Zelle ist ausdrücklich ein eigenes Referenzszenario.
+   Nein. Sie ist ein Einstieg in mögliche Anwendungsfelder, aber kein Beleg für ein konkretes System. UMAA wird anhand der öffentlichen UMAA-Beschreibung und Compliance-Unterlagen belegt. Assembly-Zelle und AMR-Flotte sind unsere Vergleichskandidaten; welche wir vollständig ausarbeiten, ist noch zu begründen.
 
 2. **Ist UMAA ein konkretes DDS-Beispiel oder nur eine Analogie?**  
-   Die öffentliche UMAA-Beschreibung sagt ausdrücklich, dass OMG DDS ein Kernbestandteil der Architektur für die Kommunikation der Autonomiekomponenten an Bord ist. Die Übertragung auf unsere Zelle ist eine Analogie auf Architekturebene; daraus folgt keine Gleichheit der Datenmodelle oder QoS-Konfigurationen.
+   Die öffentliche UMAA-Beschreibung sagt ausdrücklich, dass OMG DDS ein Kernbestandteil der Architektur für die Kommunikation der Autonomiekomponenten an Bord ist. UMAA ist ein kurzer Transfer über den Fertigungskontext hinaus, keine dritte vollständige Fallarchitektur und kein Gegenbeispiel gegen DDS. Daraus folgt keine Gleichheit der Datenmodelle oder QoS-Konfigurationen.
 
-3. **Warum UMAA nur als Transferfall und nicht als Hauptarchitektur?**  
-   Die Assembly-Zelle passt direkter zum Seminarfokus Smart Factory/Motion Control und ermöglicht eine vollständige, nachvollziehbare Zuordnung der DDS-Begriffe. UMAA zeigt knapp, dass das Architekturprinzip auch außerhalb der Fabrikautomation relevant ist. Öffentliche Dokumente belegen nicht alle Implementierungsdetails eines konkreten Fahrzeugs.
+3. **Warum vergleichen wir Assembly-Zelle und AMR-Flotte?**  
+   Beide passen zum Automatisierungsbezug des Seminars, setzen aber unterschiedliche Schwerpunkte. Die Rollen bewerten sie anhand Architektur, Automatisierungsanforderungen, Qualitätsmerkmalen und DDS-spezifischen Zukunftsaspekten. Erst diese Belege sollen die Wahl des Hauptbeispiels begründen.
 
-4. **Warum Krankenhaus und autonomes Fahren nicht mehr?**  
-   Sie gehören nicht zum beschlossenen Scope. Das Krankenhaus wäre zusätzlich stark legacy-nah und würde klinische Interoperabilität, Datenschutz und Medizinprodukt-Safety in den Vordergrund rücken. Autonomes Fahren würde eine weitere vollständige Architektur und die Abgrenzung ROS 2/DDS erfordern. Beide würden den Architekturteil verbreitern, ohne die gewählte Leitfrage besser zu beantworten.
+4. **Welche Rolle hat UMAA im Vortrag?**  
+   UMAA ist ein kurzer, belegter Transferfall: DDS wird auch in einer modularen maritimen Autonomiearchitektur genutzt. Der Vortrag vergleicht nicht die operative UMAA-Architektur mit Assembly/AMR und leitet daraus keine universelle Eignung ab.
 
 ## DDS-Architektur und Grenzen
 
 5. **Ist DDS selbst ein zentraler Datenraum oder Server?**  
    Nein. „Global Data Space“ bezeichnet das logische Datenmodell. Topics sind keine zentralen Speicherobjekte. Discovery, Transport und konkrete Teilnehmerstruktur hängen von DDS-Spezifikation, Implementierung und Konfiguration ab.
 
-6. **Ist ein fachlicher Zellbaustein automatisch ein `DomainParticipant`?**  
-   Nein. Fachliche Komponenten, Betriebssystemprozesse und DDS-`DomainParticipant`s sind unterschiedliche Sichten. Die Zuordnung muss im Deployment begründet werden und bleibt für die AP2-Komponenten-/Teilnehmerliste offen.
+6. **Ist ein fachlicher Baustein automatisch ein `DomainParticipant`?**  
+   Nein. Fachliche Komponenten, Betriebssystemprozesse und DDS-`DomainParticipant`s sind unterschiedliche Sichten. Die Zuordnung muss für den gewählten Kandidaten im Deployment begründet werden.
 
 7. **Garantiert DDS harte Echtzeit oder eine bestimmte Latenz?**  
    Nein. DDS stellt QoS-Mechanismen bereit, aber Ende-zu-Ende-Fristen hängen auch von Anwendung, Betriebssystem, Middleware-Konfiguration, Ressourcen und Netz ab. Zielwerte werden nicht als Messwerte oder Garantie ausgegeben.
@@ -37,7 +37,7 @@ Die Fragen dienen der Vorbereitung auf die Diskussion nach Rolle A. Die Antwortl
    Nein. Die Safety-Funktion ist separat abgegrenzt. DDS Security ist keine funktionale Safety-Zertifizierung. Falls später ein Diagnose- oder Betriebsstatus über DDS verteilt wird, darf er nicht mit dem sicherheitsgerichteten Pfad verwechselt werden.
 
 10. **Ist MES ein direkter DDS-Teilnehmer?**  
-    Nicht in der AP1-Skizze. Der MES-Übergang liegt außerhalb der Zell-DDS-Domain und endet am Edge-Gateway. Ob dort ein separates DDS-Netz oder ein anderes Protokoll genutzt wird, ist eine spätere Architekturentscheidung, keine bereits belegte Tatsache.
+    Nicht in der aktuellen Assembly-Kandidatenskizze. Der MES-Übergang liegt außerhalb der Zell-DDS-Domain und endet am Edge-Gateway. Ob dort ein separates DDS-Netz oder ein anderes Protokoll genutzt wird, ist noch festzulegen; bei Auswahl der AMR-Flotte wird diese Frage durch deren Systemgrenze ersetzt.
 
 11. **Warum ist das Edge-Gateway nicht gleichzeitig Subscriber und Publisher desselben Telemetry-Topics?**  
     Das wäre ohne definierte Transformations- und Topic-Grenze mehrdeutig und könnte Schleifen erzeugen. Die überarbeitete Skizze trennt `DeviceTelemetry` innerhalb der Zelle von einer externen `CellSummary`-Übergabe am Edge.
@@ -58,4 +58,4 @@ Die Fragen dienen der Vorbereitung auf die Diskussion nach Rolle A. Die Antwortl
 ## Noch zu ergänzen
 
 - Fundstellen/Abschnitte und Seitenzahlen für die OMG- und UMAA-Dokumente im Quellenregister.
-- Zusätzliche Fragen nach AP2, sobald Teilnehmerliste, MES-Grenze und Topic-Mapping feststehen.
+- Zusätzliche Fragen nach der Fallauswahl und sobald Teilnehmerliste, Systemgrenze und Topic-Mapping feststehen.

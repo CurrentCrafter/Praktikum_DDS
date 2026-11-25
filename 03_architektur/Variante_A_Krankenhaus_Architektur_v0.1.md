@@ -5,7 +5,7 @@
 **Domäne:** automatisiertes Krankenhaus (Vitaldaten, Alarme, Geräteintegration)  
 **Ziel:** Architekturstruktur für den Seminarvortrag und die schriftlichen Unterlagen
 
-> **Scope-Entscheidung:** Das Krankenhausbeispiel wurde aus dem Vortrag entfernt. Hauptbeispiel ist die Assembly-Zelle; UMAA dient als kurzer Transferfall. Die folgenden Diagramme sind nicht als aktuelle oder validierte Seminararchitektur zu verwenden.
+> **Scope-Entscheidung:** Das Krankenhausbeispiel ist keine aktuelle Fallarchitektur. Aktuell werden Assembly-Zelle und AMR-Flotte verglichen; UMAA dient als kurzer Transferfall. Die folgenden Diagramme sind ein älterer Entwurf und nicht als aktuelle oder validierte Seminararchitektur zu verwenden.
 
 ---
 

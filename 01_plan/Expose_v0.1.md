@@ -1,18 +1,19 @@
-# Exposé v0.1 — DDS für eine modulare Roboter-Assembly-Zelle
+# Exposé — DDS-Architektur: Assembly-Zelle und AMR-Flotte
 
-**Stand:** 22.11.2026
-**Status:** Entwurf; AP1-Scope festgelegt, AP2-Teilnehmer- und Datenflussdetails offen
-**Gewählter Scope:** DDS-Referenzarchitektur anhand der Assembly-Zelle; UMAA als kurzer Transferfall
+**Stand:** 25.11.2026
+**Revision:** v0.2
+**Status:** Entwurf; Assembly-Zelle und AMR-Flotte sind Vergleichskandidaten, Auswahl steht aus
+**Thematischer Scope:** DDS-Referenzarchitektur, Vergleich der beiden Anwendungskandidaten und kurzer UMAA-Transfer
 **Vortrag:** Montag, 11.01.2027 · **Abgabe:** Freitag, 08.01.2027, 10:00 via Ilias
-**Team:** 4 Personen · 80 Minuten (4 × 12 min Vortrag + 4 × 8 min Diskussion)
+**Team:** 4 Personen · 80 Minuten (48 min Vortrag + ca. 32 min Diskussion; Ablauf offen)
 
-> Dieses Exposé ist die Arbeitsgrundlage. Der Fall-Scope ist festgelegt: Assembly-Zelle als Hauptbeispiel, UMAA als Transferfall. Teilnehmerliste, MES-Grenze und Datenflüsse werden in AP2 weiter konkretisiert.
+> Das Exposé wird als gemeinsame Arbeitsgrundlage weiterbearbeitet. Laut Orga-Präsentation sollen alle Rollen Assembly-Zelle und AMR-Flotte vergleichen; die Auswahl des Hauptbeispiels wird danach begründet getroffen. UMAA bleibt ein kurzer Transferfall. Hausautomation und Krankenhaus werden nicht als zusätzliche Fallarchitekturen ausgearbeitet.
 
 ---
 
 ## 1. Ausgangslage und Problem
 
-Eine modulare Roboter-Assembly-Zelle besteht aus Komponenten unterschiedlicher Hersteller: Robotersteuerung, Vision-System, Motion-/PLC-Controller, Safety-Steuerung, Edge-Gateway und MES-Anbindung. Die DDS-relevanten Zellkomponenten tauschen Betriebszustände, Trajektorien, Bildergebnisse, Alarme und Telemetrie aus. Die Safety-Funktion ist separat abgegrenzt; die MES-Anbindung endet in dieser AP1-Sicht am Edge-Gateway.
+Als Anwendungskandidaten werden eine modulare Roboter-Assembly-Zelle und eine AMR-Flotte betrachtet. Die Assembly-Zelle umfasst im Arbeitsentwurf Komponenten unterschiedlicher Hersteller: Robotersteuerung, Vision-System, Motion-/PLC-Controller, Safety-Steuerung, Edge-Gateway und MES-Anbindung. Die DDS-relevanten Zellkomponenten tauschen Betriebszustände, Trajektorien, Bildergebnisse, Alarme und Telemetrie aus. Die Safety-Funktion ist separat abgegrenzt; die MES-Anbindung endet in dieser Kandidatenskizze am Edge-Gateway.
 
 Dabei treten vier Probleme gleichzeitig auf:
 
@@ -23,7 +24,18 @@ Dabei treten vier Probleme gleichzeitig auf:
 
 DDS (Data Distribution Service, OMG) adressiert diese Probleme mit einem **datenzentrischen** Modell: Teilnehmer publizieren und abonnieren typisierte Topics in einem Global Data Space, ohne sich gegenseitig zu kennen. **QoS** legt fest, welche Eigenschaften der Datenstrom haben muss. **RTPS** definiert das Wire-Protokoll, **DDS Security** ergänzt Authentifizierung, Zugriffskontrolle und Verschlüsselung.
 
-**Die Leitfrage des Seminars lautet:** Welche Architektur- und QoS-Entscheidungen machen DDS in einer automatisierten Assembly-Zelle tragfähig — und wo endet die Tragfähigkeit?
+**Die Leitfrage des Seminars lautet:** Welches der Szenarien Assembly-Zelle oder AMR-Flotte eignet sich besser, um DDS-Architektur, Automatisierungsanforderungen und Qualitätsmerkmale nachvollziehbar zu erklären — und wo liegen die Grenzen von DDS?
+
+**Vergleichsraster (noch zu befüllen):**
+
+| Rollenpaket | Prüfkriterien für beide Kandidaten | Assembly-Zelle: Belege/Bewertung | AMR-Flotte: Belege/Bewertung |
+|---|---|---|---|
+| A — Architektur | Komponenten, Kommunikationsbeziehungen, Systemgrenze, DDS-Mapping | offen | offen |
+| B — Automatisierung | Echtzeit, Events, Scheduling/Synchronisation, Embedded-HW, Heterogenität | offen | offen |
+| C — Qualitätsmerkmale | Zuverlässigkeit, Leistung, Flexibilität, Robustheit, Verfügbarkeit, Sicherheit, Anpassbarkeit, Testbarkeit | offen | offen |
+| D — Zukunft/DDS-spezifisch | Offenheit, Zukunftsfähigkeit, TSN, Embedded/IoT, DDS-Sicherheit, Anwendungsbezug | offen | offen |
+
+Die Rollen tragen Quellen und eigene Hypothesen getrennt ein; daraus wird die Auswahl des vollständig auszuarbeitenden Beispiels begründet.
 
 ---
 
@@ -35,11 +47,11 @@ Die Thesen sind bewusst als **prüfbare Behauptungen** formuliert, nicht als Zus
 
 DDS entkoppelt Teilnehmer in **Raum** (keine Adresskenntnis), **Zeit** (Durability, History) und **Datenfluss** (Topic statt Aufruf). Der Nutzen entsteht nicht durch „schneller als MQTT", sondern durch das Datenmodell: Topics, Keys und Instanzen beschreiben Zustände, nicht Nachrichten.
 
-*Prüfzugang:* Architekturvergleich DDS vs. Broker-Modell; Mapping der Zellen-Komponenten auf Topics; Gegenprobe, wo DDS unnötig komplex ist.
+*Prüfzugang:* Kandidatenvergleich; Mapping der Komponenten des ausgewählten Falls auf Topics; Gegenprobe, wo DDS unnötig komplex ist.
 
 ### H2 — QoS ist die eigentliche Architektur; Default-QoS ist ein Entwurfsfehler
 
-Die fachlichen Anforderungen der Zelle (Fristen, Verlusttoleranz, Aktualität und History) bestimmen die Auswahl der QoS-Policies und werden nicht durch QoS ersetzt. Ein `JointState` mit `Reliable`/`KeepAll` kann ebenso unpassend sein wie ein nicht nachgelieferter Alarm; jede Wahl braucht eine Anforderungsbegründung. Safety-Daten sind nicht Teil dieser DDS-QoS-Beispiele.
+Die fachlichen Anforderungen des ausgewählten Anwendungsszenarios (Fristen, Verlusttoleranz, Aktualität und History) bestimmen die Auswahl der QoS-Policies und werden nicht durch QoS ersetzt. Jede Wahl braucht eine Anforderungsbegründung. Safety-Daten sind nicht Teil der DDS-QoS-Beispiele.
 
 *Prüfzugang:* QoS-Tabelle pro Topic; RxO-Matching; Demo mit zwei Profilen; Begründung jeder QoS-Achse.
 
@@ -53,7 +65,16 @@ DDS ist stark bei zyklischen, multicastfähigen Datenströmen mit vielen Teilneh
 
 ## 3. Beispielsystem
 
-**Zelle:** modulare Assembly-Zelle mit Roboter, Vision, Motion/PLC, Safety, Edge und MES.
+**Vergleichskandidaten:**
+
+1. **Modulare Assembly-Zelle:** Roboter, Vision, Motion/PLC, Safety, Edge und MES-Anbindung.
+2. **AMR-Flotte:** Transportroboter im Lager, Flottenmanager und Ladestationen. Für diesen Kandidaten gilt als Umsetzungsprofil direkte DDS-API ohne ROS 2; die DDS-Implementierung bleibt offen.
+
+   Architekturentwurf: [`../03_architektur/Variante_C_AMR_Flotte_Architektur_v0.1.md`](../03_architektur/Variante_C_AMR_Flotte_Architektur_v0.1.md).
+
+Alle Rollen bewerten beide Kandidaten anhand ihres Arbeitspakets. Die Entscheidung, welcher Kandidat das Hauptbeispiel wird, ist offen und wird im Scope-Freeze begründet. UMAA bleibt ein kurzer Transferfall; es ist weder der Gegenentwurf zu DDS noch eine dritte vollständige Fallarchitektur.
+
+### Assembly-Zelle — Arbeitsentwurf
 
 **Fachliche Komponenten und Datenflüsse:** Die Komponenten sind keine Festlegung auf gleich viele DDS-`DomainParticipant`s; die Prozesszuordnung wird im Deployment begründet.
 
@@ -110,14 +131,16 @@ Der Seminar-Brief verlangt eine Bewertung an allgemeinen Qualitätsmerkmalen. Di
 
 DDS ist nicht die einzige Antwort auf verteilte Automation. Der Vortrag vergleicht vier Ansätze entlang der Achsen Modell, Transport, Echtzeit und Ökosystem:
 
-| Ansatz | Modell | Stärke | Schwäche im Zellenkontext |
+| Ansatz | Modell | Stärke | mögliche Grenze im Anwendungskontext |
 |---|---|---|---|
 | DDS | datenzentrisch, Pub/Sub, QoS | viele-zu-viele, Echtzeit, QoS-Vertrag | Komplexität, Konfiguration, Security-Setup |
 | OPC UA Pub/Sub | informationsmodellzentriert | Semantik, Companion Specs, Industrieakzeptanz | Echtzeit/QoS weniger fein, Modell-Overhead |
 | MQTT | Broker-basiert, Topics | einfach, Cloud-nah, breite Toolbasis | zentraler Broker, QoS nur grob, Latenz |
-| SOME/IP | serviceorientiert, Automotive | harte Echtzeit im Fahrzeug, AUTOSAR-Nähe | Automations-/IT-Integration, Ökosystem |
+| SOME/IP | serviceorientiert, Automotive | serviceorientierter Kommunikationsansatz | Passung zum gewählten Automatisierungsbeispiel ist zu begründen |
 
-**UMAA-Transfer:** Eine öffentliche UMAA-Beschreibung benennt OMG DDS als Kernbestandteil der Kommunikation zwischen Autonomie-Komponenten an Bord unbemannter maritimer Fahrzeuge [UMAA]. Das dient als knapper Transferbeleg für modulare DDS-Architektur, nicht als zweite vollständige Architektur. Krankenhaus und autonomes Fahren gehören nicht zum Vortragsscope.
+**AMR-Kandidat:** Die AMR-Flotte ist die Alternative zur Assembly-Zelle. Discovery und QoS bei wechselnder Teilnehmerzahl sowie Funknetzbedingungen sind mögliche Analyseaspekte, aber für das Beispiel noch anhand belastbarer Quellen zu prüfen.
+
+**UMAA-Transfer:** Eine öffentliche UMAA-Beschreibung benennt OMG DDS als Kernbestandteil der Kommunikation zwischen Autonomie-Komponenten an Bord unbemannter maritimer Fahrzeuge [UMAA]. Das dient als kurzer Transferbeleg für DDS außerhalb der Fertigungsautomation, nicht als Gegenbeispiel und nicht als dritte vollständige Fallarchitektur. Krankenhaus und autonomes Straßenfahren gehören nicht zum Vortragsscope.
 
 ---
 
@@ -127,13 +150,13 @@ Zielumfang: 15–20 Seiten plus Anhang; ohne weitere Zusatzliteratur verständli
 
 | Abschnitt | Inhalt | Seiten |
 |---|---|---|
-| 1 | Einleitung: Zelle als verteiltes Echtzeitsystem, Leitfrage | 1–2 |
+| 1 | Einleitung: DDS-Fragestellung und Vergleich der Anwendungskandidaten | 1–2 |
 | 2 | DDS-Grundlagen: DCPS, Global Data Space, Discovery, RTPS | 3 |
-| 3 | Architektur der Zelle: Komponenten, DDS-Entities, Topics und Datenflüsse; UMAA-Transfer in Kurzform | 3 |
+| 3 | Architektur: gewählter Kandidat mit Komponenten, DDS-Entities, Topics und Datenflüssen; UMAA-Transfer kurz | 3 |
 | 4 | QoS und Echtzeit: Achsen, RxO, Deadline, Latenzbudget, TSN | 3 |
 | 5 | Security: Bedrohungsmodell, DDS Security, Zero-Trust, Grenzen | 2–3 |
 | 6 | Deployment: Embedded, Edge, MES, Ressourcen, Redundanz | 2 |
-| 7 | Qualitätsmerkmale und Bewertung | 2 |
+| 7 | Qualitätsmerkmale und vergleichende Bewertung der Kandidaten | 2 |
 | 8 | Abgrenzung: OPC UA Pub/Sub, MQTT, SOME/IP | 2 |
 | 9 | Fazit, eigene Hypothesen, Ausblick | 1–2 |
 | Anhang | Glossar, IDL, QoS-XML, Quellenverzeichnis | 3–5 |
@@ -144,14 +167,14 @@ Jede Kernaussage bekommt eine Quelle oder eine sichtbare Kennzeichnung als eigen
 
 ## 7. Vortrag und Diskussion
 
-Der 80-Minuten-Block ist in vier Teile à 12 Minuten plus vier Diskussionen à 8 Minuten gegliedert (Empfehlung: Diskussion direkt im Anschluss an den jeweiligen Teil, weil die Individualnote auch die Antwortqualität bewertet).
+Die Rollenaufteilung folgt der Orga-Präsentation. Das konkrete Diskussionsformat ist **noch nicht beschlossen**: Das Deck schlägt alle vier Vorträge nacheinander mit gemeinsamer Diskussion im Anschluss vor; die bisherige Agenda enthält als Alternative Diskussionen direkt nach jedem Teil.
 
-| Teil | Person | Inhalt | Zeit |
+| Rolle | Schwerpunkt | Inhalt | Zeit |
 |---|---|---|---|
-| A | Architektur + roter Faden | Problem, Anforderungen, DDS-Kern, Mapping auf die Zelle (inkl. 2 min Eröffnung) | 0–12 + 12–20 |
-| B | QoS/Real-Time | QoS-Achsen, Deadline, Latenzbudget, RTPS, TSN | 20–32 + 32–40 |
-| C | Security/Deployment | Bedrohungsmodell, DDS Security, Deployment, Qualitätsmerkmale | 40–52 + 52–60 |
-| D | Vergleich/Demo/Fazit | Abgrenzung, Demo, Bewertung, Fazit | 60–72 + 72–80 |
+| A | Architektur, roter Faden, Integration/Abgabe | DDS-Referenzarchitektur und struktureller Vergleich der Kandidaten | 12 min; Diskussion gemäß noch festzulegendem Format |
+| B | Automatisierung | Zeitverhalten, Eventmanagement, Scheduling/Synchronisation, Embedded-HW und Heterogenität | 12 min; Diskussion gemäß noch festzulegendem Format |
+| C | Qualitätsmerkmale | Zuverlässigkeit, Leistung, Flexibilität, Robustheit, Verfügbarkeit, Sicherheit, Anpassbarkeit, Testbarkeit | 12 min; Diskussion gemäß noch festzulegendem Format |
+| D | Zukunft und DDS-spezifische Aspekte | Offenheit, TSN, Embedded/IoT, DDS-Datensicherheit, Anwendungsbezug und Ausblick | 12 min; Diskussion gemäß noch festzulegendem Format |
 
 Details, Alternativformat und Diskussionsregeln: [`Agenda_80min.md`](Agenda_80min.md).
 
@@ -159,9 +182,9 @@ Details, Alternativformat und Diskussionsregeln: [`Agenda_80min.md`](Agenda_80mi
 
 ## 8. Demo
 
-- **Technologie:** eProsima Fast DDS (Alternative: Cyclone DDS), da beide Open Source, C++ und RTOS-nah genug für ein Beispiel.
+- **Technologie:** direkte DDS-API ohne ROS 2; FOSS ist Anforderung. Fast DDS Community (Apache-2.0) und Eclipse Cyclone DDS (EPL-2.0/EDL-1.0) sind Kandidaten; Auswahl und Zielplattform-Validierung offen.
 - **Typen (IDL):** `JointState` (`@key axis_id`), `Trajectory`, `VisionResult`, `Alarm`.
-- **Aufbau:** ein Publisher (Robotersteuerung/Motion), zwei Subscriber (Visualisierung, Edge).
+- **Aufbau:** vorläufig ein Publisher (z. B. Robotersteuerung/Motion), zwei Subscriber (Visualisierung, Edge); endgültig an die Fallauswahl anpassen. Demo-Lead und technischer Umfang sind noch festzulegen.
 - **QoS-Profile:** `control` (BestEffort, KeepLast(1), Deadline), `alarm` (Reliable, TransientLocal), `telemetry` (BestEffort).
 - **Sichtbarer Effekt:** später startender Reader erhält den letzten Alarm; Deadline-Event bei ausbleibenden Daten; BestEffort verliert Samples.
 - **Fallback:** aufgezeichnetes Video plus Code-Ausschnitte; die Demo ist nicht kritisch für die Note.
@@ -189,7 +212,7 @@ Legacy-Material (`legacy_*`) wird **nicht** zitiert.
 |---|---|---|
 | Thema zu breit (DDS + TSN + Security + Vergleich) | vier oberflächliche Teile | feste Seiten- und Minutenbudgets pro Teil; Vergleich auf eine Tabelle begrenzen |
 | Keine Messwerte für Echtzeit | Behauptungen statt Belege | Werte als Annahmen kennzeichnen; Demo zeigt Verhalten, nicht Latenzgarantien |
-| Use-case-Vergleich wird zu breit | Architekturteil verliert roten Faden | Assembly-Zelle vollständig ausarbeiten; UMAA nur als kurzen Transfer; Krankenhaus und autonomes Fahren auslassen |
+| Use-case-Vergleich wird zu breit | Architekturteil verliert roten Faden | Assembly und AMR anhand gemeinsamer Kriterien vergleichen; nur einen Kandidaten vollständig ausarbeiten; UMAA als kurzen Transfer; keine Krankenhaus- oder Straßenfahrzeugarchitektur |
 | Demo scheitert live | Vortragsabbruch | Video-Backup, Code-Ausschnitte, zweites Gerät |
 | Security wird juristisch | Fokusverlust | Security auf Architektur und Bedrohungsmodell begrenzen |
 | Terminkollision mit Praktikum | Zeitverlust | Praktikumstage 23.11., 07.12., 21.12. sind für das Seminar gesperrt |
@@ -200,10 +223,10 @@ Legacy-Material (`legacy_*`) wird **nicht** zitiert.
 
 | Rolle | Schwerpunkt | Kernartefakte |
 |---|---|---|
-| A | Architektur, roter Faden, Integration, Moderation | Abschnitte 2–3, Gesamt-PDF, Abgabe |
-| B | QoS, Real-Time, TSN | Abschnitt 4, QoS-Tabelle, Latenzbudget |
-| C | Security, Deployment, Qualitätsmerkmale | Abschnitte 5–7, Bedrohungsmodell |
-| D | Vergleich, Demo, Fazit | Abschnitte 8–9, Demo, Backup-Video |
+| A | Architektur, roter Faden, Integration/Abgabe | DDS-Architektur, Kandidatenvergleich aus Architektursicht, integrierte Unterlagen |
+| B | Automatisierung | Bewertung anhand der in Folie 7 genannten Automatisierungsanforderungen |
+| C | Qualitätsmerkmale | Qualitätsbewertung beider Kandidaten einschließlich System-/Datensicherheit |
+| D | Zukunft/DDS-spezifische Aspekte | Offenheit/Zukunft, TSN, Embedded/IoT, DDS-Security-Aspekte und Anwendungsbezug |
 
 | Meilenstein | Datum |
 |---|---|
@@ -222,10 +245,11 @@ Vollständiger Plan: [`../Timeline.md`](../Timeline.md).
 
 ## 12. Offene Detailpunkte bis zum Scope-Freeze
 
-1. **Fast DDS oder Cyclone DDS** — Entscheidung anhand von Build-Aufwand und Dokumentationsqualität.
-2. **TSN-Tiefe** — eigene Folie mit 802.1Qbv/Qav oder nur als Architekturbemerkung?
-3. **Safety-Abgrenzung** — wie viel IEC 61508/ISO 13849 ist nötig, ohne das Thema zu sprengen?
-4. **UMAA-Transfer** — konkrete Fundstellen der öffentlichen Architektur-/Compliance-Unterlagen im Quellenregister erfassen; keine zweite Architektur ausarbeiten.
-5. **Umfang der Demo** — nur `JointState`/`Alarm` oder zusätzlich `VisionResult`?
-6. **Messwerte** — gibt es eine kleine Latenzmessung auf dem Desktop, die als Indiz (nicht als Garantie) taugt?
-7. **Quellenversionen** — aktuelle OMG-Versionen und TSN-Normenstände prüfen und im Register festhalten.
+1. **Auswahl des Hauptbeispiels** — Assembly-Zelle oder AMR-Flotte; anhand der Rollenbewertungen bis zum Scope-Freeze begründen.
+2. **FOSS-DDS-Implementierung** — Fast DDS Community oder Eclipse Cyclone DDS anhand von Build-Aufwand, Dokumentationsqualität, Zielplattform, benötigten QoS-/Security-Funktionen und transitiven Lizenzen vergleichen; Fast DDS Pro nicht voraussetzen.
+3. **TSN-Tiefe** — eigene Folie mit 802.1Qbv/Qav oder nur als Architekturbemerkung?
+4. **Safety-Abgrenzung** — wie viel IEC 61508/ISO 13849 ist nötig, ohne das Thema zu sprengen?
+5. **UMAA-Transfer** — konkrete Fundstellen der öffentlichen Architektur-/Compliance-Unterlagen im Quellenregister erfassen; keine dritte Fallarchitektur ausarbeiten.
+6. **Umfang der Demo** — Beispiel und Zuständigkeit festlegen.
+7. **Messwerte** — gibt es eine kleine Latenzmessung auf dem Desktop, die als Indiz (nicht als Garantie) taugt?
+8. **Quellenversionen** — aktuelle OMG-Versionen und TSN-Normenstände prüfen und im Register festhalten.

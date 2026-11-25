@@ -1,11 +1,11 @@
 # Architektur v0.2 — DDS in einer modularen Roboter-Assembly-Zelle
 
-**Status:** Hauptbeispiel für den Architekturteil, Revisionsstand v0.2; QoS und Deployment noch nicht abschließend validiert  
+**Status:** Kandidatenentwurf für den Vergleich mit einer AMR-Flotte, Revisionsstand v0.2; endgültige Auswahl des Hauptbeispiels steht aus; QoS und Deployment sind nicht abschließend validiert  
 **Grundlage:** gewählter Seminar-Scope, vormals `01_plan/Projektvarianten.md`, Variante B  
 **Domäne:** Smart Factory / Motion Control — Roboter, Vision, Motion/PLC, Edge, MES  
 **Ziel:** Architekturstruktur für den Seminarvortrag und die schriftlichen Unterlagen
 
-> **Scope:** Die DDS-Referenzarchitektur wird an der Assembly-Zelle erklärt. Als kurzer Transferfall dient UMAA für unbemannte maritime Fahrzeuge: DDS ist dort laut öffentlicher UMAA-Beschreibung ein Kernbestandteil der Kommunikation zwischen Autonomiekomponenten an Bord [3][4]. UMAA erhält keine zweite vollständige Architektur.
+> **Scope:** Diese Datei dokumentiert den Architekturentwurf für einen der beiden Vergleichskandidaten (Assembly-Zelle vs. AMR-Flotte). Die Auswahl des einen vollständig auszuarbeitenden Hauptbeispiels steht noch aus. Als kurzer Transferfall dient UMAA für unbemannte maritime Fahrzeuge: DDS ist dort laut öffentlicher UMAA-Beschreibung ein Kernbestandteil der Kommunikation zwischen Autonomiekomponenten an Bord [3][4]. UMAA erhält keine zweite vollständige Architektur.
 
 > **Abgrenzung:** Krankenhaus und autonomes Fahren sind nicht Teil des gewählten Vortragsumfangs. Die vorhandene Krankenhausdatei bleibt als ausgeschlossener Arbeitsentwurf erhalten. Eine reale Zellenimplementierung wird hier nicht behauptet; die Zelle ist ein begründetes Referenzszenario.
 

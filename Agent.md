@@ -1,6 +1,6 @@
 # Agent.md — DDS-Seminar (WS 2026/27)
 
-**Stand:** 22.11.2026  
+**Stand:** 25.11.2026  
 **Übergeordnet:** `../AGENTS.md` (Kurskorpus SEKM) — zuerst lesen.  
 **Zweck:** Orientierung für Agenten, die in `Praktikum_DDS/` am DDS-Seminar arbeiten.
 
@@ -15,7 +15,7 @@ Arbeitsordner für den **DDS-Seminarvortrag** (Data Distribution Service) im Mod
 - **Vortrag:** Montag, **11.01.2027**, Seminar 4
 - **Abgabe Unterlagen:** Freitag, **08.01.2027, 10:00** via Ilias
 - **Team:** 4 Personen, 80 Minuten (4 × 12 min + 32 min Diskussion)
-- **These/Thema:** DDS-Referenzarchitektur anhand der **Assembly-Zelle**; UMAA für unbemannte maritime Fahrzeuge als kurzer Transferfall
+- **These/Thema:** DDS-Referenzarchitektur; **Assembly-Zelle vs. AMR-Flotte** vergleichen, UMAA als kurzer Transferfall
 - **Zeitplan:** `Timeline.md` (im Projekt-Root) ist die maßgebliche Planungsdatei.
 
 Es gibt hier **noch keinen Code und kein Build-System**. Neue Inhalte werden als Markdown, DOCX, PPTX, PDF, UML-Export oder C++-Demo abgelegt.
@@ -42,7 +42,7 @@ Es gibt hier **noch keinen Code und kein Build-System**. Neue Inhalte werden als
 |---|---|---|
 | `01_plan/` | Exposé, Entscheidungen, Meeting-Notizen, Legacy-Kontext | `Projektvarianten.md`, `Expose_v0.1.md`, `Agenda_80min.md`, `legacy_Readme_Altteam.txt`, `legacy_Anmerkungen_Kreiser.txt` |
 | `02_quellen/` | OMG-Specs, Tutorials, Papers, Quellenregister, Exzerpte | 3 Legacy-PDFs |
-| `03_architektur/` | Grundlagen, gewählte Assembly-Architektur, ausgeschlossener Krankenhausentwurf | `Architektur_Grundlagen.md`, `Variante_B_Assembly_Zelle_Architektur_v0.1.md`, ausgeschlossene `Variante_A_Krankenhaus_Architektur_v0.1.md` |
+| `03_architektur/` | Grundlagen, zwei Anwendungskandidaten, ausgeschlossener Krankenhausentwurf | `Architektur_Grundlagen.md`, `Variante_B_Assembly_Zelle_Architektur_v0.1.md`, `Variante_C_AMR_Flotte_Architektur_v0.1.md`, ausgeschlossene `Variante_A_Krankenhaus_Architektur_v0.1.md` |
 | `04_demo/` | Fast-DDS-Demo, IDL, QoS-XML, README, Setup, Backup-Video | `legacy_FastDDS_Anleitung.docx` |
 | `05_unterlagen/` | Ausarbeitung, Abschnitte, Glossar, finale PDF-Quelle | 4 Legacy-DOCX |
 | `06_folien/` | Foliensatz, Master, Sprechskripte, Probeversionen | `legacy_DDS_Praesentation_4Teile.pptx`, `legacy_Drehbuch_Teil4.docx` |
@@ -115,9 +115,12 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 - **QoS:** u. a. Reliability, Durability, History, Deadline, LatencyBudget, Ownership, Liveliness, Partition, ResourceLimits; RxO-Matching.
 - **RTPS/DDSI:** standardisiertes Wire-Protokoll, dezentrale Discovery (SPDP/SEDP), keine zentrale Broker-Instanz.
 - **Security:** DDS Security als Erweiterung (Authentication, Access Control, Cryptography, Logging); nicht mit der Basis-DDS-Spezifikation verwechseln.
-- **Hauptbeispiel:** Roboter-Assembly-Zelle mit Robotersteuerung, Vision, Motion/PLC und Edge; MES-Grenze und Zuordnung zu DDS-`DomainParticipant`s werden in AP2 festgelegt. Safety wird als separater Pfad behandelt.
-- **Transferfall:** UMAA als modulare Softwarearchitektur für unbemannte maritime Fahrzeuge; nicht als zweite vollständige Beispielarchitektur ausarbeiten.
-- **Ausgeschlossen:** Krankenhaus als aktiver Vortragsfall und autonomes Fahren.
+- **Vergleichskandidaten:** modulare Roboter-Assembly-Zelle sowie AMR-Flotte; die Auswahl des einen vollständig ausgearbeiteten Hauptbeispiels ist noch offen. Die Assembly-Architektur bleibt ein Kandidatenentwurf; MES-Grenze und Teilnehmerzuordnung sind darin vorläufig. Safety ist separat abgegrenzt.
+- **Transferfall:** UMAA als modulare Softwarearchitektur für unbemannte maritime Fahrzeuge; kurz behandeln, nicht als Gegenbeispiel oder dritte Vollarchitektur.
+- **AMR-Umsetzungsprofil:** direkte native DDS-API ohne ROS 2; konkrete DDS-Implementierung bleibt offen.
+- **AMR-Lizenzanforderung:** FOSS; erste Kandidaten sind Fast DDS Community (Apache-2.0) und Eclipse Cyclone DDS (EPL-2.0/EDL-1.0). Transitive Abhängigkeiten und verwendete Versionen trotzdem prüfen.
+- **Rollenaufteilung:** A Architektur/roter Faden/Integration/Abgabe; B Automatisierung; C Qualitätsmerkmale; D Zukunft und DDS-spezifische Aspekte.
+- **Nicht als Fallarchitektur ausarbeiten:** Krankenhaus, Hausautomation oder autonomes Straßenfahren.
 - **Drei Thesen:** H1 datenzentrische Entkopplung, H2 QoS ist die Architektur, H3 DDS passt für viele-zu-viele-Echtzeitdaten, nicht für jeden Request/Response-Fall.
 
 ---
@@ -141,7 +144,7 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 - Quellenregister: `02_quellen/Quellenregister.md` mit Citation-Key, Typ, Fundstelle, Relevanz.
 - Diagramme: bearbeitbare Quelle **und** Export (PNG/SVG) in `03_architektur/`.
 - Demo: Code, `README.md`, IDL, QoS-XML und ggf. Backup-Video in `04_demo/`; keine Build-Artefakte einchecken.
-- AP1-Professorfragen und Antwortlinien: `07_qa/Fragenbank.md`. Beschlossener Scope und offene Folgearbeit: `DDS_offene_Fragen.md`.
+- AP1-Professorfragen und Antwortlinien: `07_qa/Fragenbank.md`. Beschlossener Vergleichsauftrag und offene Folgearbeit: `DDS_offene_Fragen.md`.
 
 ---
 
@@ -149,10 +152,13 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 
 | Entscheidung | Empfehlung | Status |
 |---|---|---|
-| A = Architektur-Kern + Beispiel | Ja, Assembly-Zelle plus knapper UMAA-Transfer | entschieden |
-| Demo-Implementierung | Fast DDS (Alternative: Cyclone DDS) | offen |
+| Auswahl Hauptbeispiel | Assembly-Zelle vs. AMR-Flotte; UMAA als kurzer Transfer | Vergleich läuft |
+| Rollenaufteilung | A Architektur, B Automatisierung, C Qualitätsmerkmale, D Zukunft/DDS-spezifisch | festgelegt |
+| AMR-FOSS-Anforderung | kommerzielle Erweiterungen nicht voraussetzen | festgelegt |
+| AMR-DDS-Implementierung | Fast DDS Community oder Cyclone DDS | offen |
+| Vortrags-/Diskussionsformat | Vorschlag der Orga-Präsentation vs. bisherige Agenda | offen |
+| Demo-Implementierung | Fast DDS Community oder Cyclone DDS; FOSS-Kandidaten | offen |
 | Umfang Unterlagen | 15–20 Seiten + Anhang | offen |
-| Diskussionsformat | 4 × (12 + 8), Alternative: 48 + 32 | offen |
 | UML-Werkzeug | Visual Paradigm, Export PNG/SVG | offen |
 | Genaues Zeitfenster 11.01. | beim Lehrstuhl erfragen | offen |
 
@@ -160,13 +166,13 @@ Alle Dateien stammen aus einem früheren DDS-Seminar (Vortrag 16.01.2026, 4er-Te
 
 ## 10. Nächste Schritte
 
-1. `Timeline.md` lesen und bestätigen.
-2. **Scope entschieden:** Assembly-Zelle als Hauptfall, UMAA als kurzer Transfer. Krankenhaus und autonomes Fahren sind ausgeschlossen; Details in `01_plan/Projektvarianten.md`.
-3. `01_plan/Expose_v0.1.md` prüfen; offene Punkte in Abschnitt 12 bis zum Scope-Freeze klären.
+1. `Timeline.md` als übernommene interne Planungsbaseline verwenden; Status verstrichener Meilensteine nachtragen.
+2. **Beispielvergleich:** Assembly-Zelle und AMR-Flotte anhand der vier Rollenpakete bewerten; UMAA bleibt kurzer Transfer. Auswahl im Scope-Freeze begründen.
+3. `01_plan/Expose_v0.1.md` gemeinsam fortschreiben; Entscheidung und offene Detailpunkte bis zum Scope-Freeze dokumentieren.
 4. `01_plan/Agenda_80min.md` prüfen; Diskussionsformat (4 × 12+8 oder 48+32) festlegen.
-5. Team-Kickoff terminieren; Rollen A/B/C/D personell besetzen.
+5. Team-Tools/Abstimmung festlegen; Rollen A/B/C/D sind thematisch zugewiesen.
 6. `02_quellen/Quellenregister.md` anlegen; Legacy-PDFs durch aktuelle OMG-Versionen ersetzen.
-7. Alte PPTX nur als Struktur lesen; mit dem Neuaufbau für die Zelle beginnen.
+7. Orga-Präsentation als Arbeitsgrundlage nutzen; Kandidatenvergleich aktualisieren.
 8. Fast-DDS-Demo aus der Legacy-Anleitung ableiten und gegen die aktuelle Dokumentation prüfen.
 
 ---

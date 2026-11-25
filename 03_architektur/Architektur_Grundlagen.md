@@ -2,9 +2,9 @@
 
 **Status:** Arbeitsdokument  
 **Stand:** 22.11.2026  
-**Kontext:** DDS-Seminar; Hauptbeispiel modulare Roboter-Assembly-Zelle, Transferfall UMAA
+**Kontext:** DDS-Seminar; Vergleichskandidaten Assembly-Zelle und AMR-Flotte, Transferfall UMAA
 
-Sammlung grundlegender Begriffe und Architekturprinzipien zu DDS, DDSI-RTPS und deren Einsatz in verteilten Automatisierungssystemen. Die Assembly-Zelle ist das einzige ausgearbeitete Anwendungsbeispiel; UMAA für unbemannte maritime Fahrzeuge dient als knapper Transferfall. Krankenhaus und autonomes Fahren sind aus dem Vortragsumfang ausgeschlossen. Die Darstellung des Paketwegs dient der Einordnung in das OSI-Modell. Sie ist kein Nachweis für harte Echtzeit oder funktionale Sicherheit.
+Sammlung grundlegender Begriffe und Architekturprinzipien zu DDS, DDSI-RTPS und deren Einsatz in verteilten Automatisierungssystemen. Assembly-Zelle und AMR-Flotte werden als Anwendungskandidaten verglichen; welcher Fall vollständig ausgearbeitet wird, ist noch zu entscheiden. UMAA für unbemannte maritime Fahrzeuge dient als knapper Transferfall. Krankenhaus, Hausautomation und autonomes Straßenfahren werden nicht als Fallarchitekturen ausgearbeitet. Die Darstellung des Paketwegs dient der Einordnung in das OSI-Modell. Sie ist kein Nachweis für harte Echtzeit oder funktionale Sicherheit.
 
 ## 1. DDS: Überblick und Datenmodell
 
@@ -92,7 +92,8 @@ Unicast und Multicast beschreiben **Adressierung bzw. Verteilung**, nicht Sicher
 
 DDS eignet sich insbesondere für verteilte Anwendungen, die typisierte Datenströme austauschen und dabei nicht direkt voneinander abhängig sein sollen. Im Seminar stehen folgende Beispiele im Fokus:
 
-- **Hauptbeispiel — Assembly-Zelle:** Zustände, Messwerte, Vision-Ergebnisse und Alarme zwischen Robotersteuerung, Motion/PLC, Vision und Edge.
+- **Vergleichskandidaten:** Assembly-Zelle (Roboter, Vision, Motion/PLC, Edge) und AMR-Flotte (Transportroboter, Flottenmanager, Ladestationen). Welcher Fall vollständig ausgearbeitet wird, steht noch aus.
+- **AMR-Architekturentwurf:** [`Variante_C_AMR_Flotte_Architektur_v0.1.md`](Variante_C_AMR_Flotte_Architektur_v0.1.md) — Kandidatenmodell, noch keine Auswahl des Hauptbeispiels.
 - **Transferfall — UMAA:** Die öffentliche UMAA-Beschreibung benennt OMG DDS als Kernbestandteil der Kommunikation zwischen Autonomiekomponenten an Bord unbemannter maritimer Fahrzeuge. Dieses Beispiel belegt einen konkreten Einsatzbereich, nicht eine universelle Verbreitung in Defense-Systemen. [5]
 - Allgemein: verteilte Systeme mit mehreren Datenproduzenten und -konsumenten sowie unterschiedlichen Anforderungen an Aktualität, Zuverlässigkeit oder History.
 

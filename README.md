@@ -2,9 +2,9 @@
 
 Seminarprojekt zu **Data Distribution Service (DDS)** im Modul QEKS/SEKM bei Prof. Dr.-Ing. Stefan Kreiser.
 
-**Thema:** DDS-Referenzarchitektur anhand einer modularen Roboter-Assembly-Zelle; UMAA als kurzer Transferfall  
+**Thema:** DDS-Referenzarchitektur; Vergleich Assembly-Zelle vs. AMR-Flotte, UMAA als kurzer Transferfall  
 **Team:** 4 Personen · **Vortrag:** 11.01.2027 · **Abgabe:** 08.01.2027, 10:00 via Ilias  
-**Umfang:** 80 Minuten (4 × 12 min Vortrag + 4 × 8 min Diskussion)
+**Umfang:** 80 Minuten (48 min Vortrag + ca. 32 min Diskussion; genaue Anordnung offen)
 
 > Dies ist ein Dokumentations- und Präsentationsprojekt, kein Softwareprojekt. Es gibt (noch) keinen Build, keine Tests und keine CI.
 
@@ -32,14 +32,17 @@ Seminarprojekt zu **Data Distribution Service (DDS)** im Modul QEKS/SEKM bei Pro
 | Ich möchte … | Datei |
 |---|---|
 | den Zeitplan sehen | [`Timeline.md`](Timeline.md) |
+| Arbeitspaket A abarbeiten | [`Arbeitspaket_A.md`](Arbeitspaket_A.md) |
 | Scope-Entscheidung und früheren Variantenvergleich lesen | [`01_plan/Projektvarianten.md`](01_plan/Projektvarianten.md) |
+| Arbeitspakete der Orga-Präsentation mit dem Repo abgleichen | [`01_plan/2026-11-25_abgleich_orga_praesentation_repo.md`](01_plan/2026-11-25_abgleich_orga_praesentation_repo.md) |
 | vorbereitete Fragen und Antwortlinien lesen | [`07_qa/Fragenbank.md`](07_qa/Fragenbank.md) |
 | das Exposé lesen | [`01_plan/Expose_v0.1.md`](01_plan/Expose_v0.1.md) |
 | den 80-Minuten-Ablauf sehen | [`01_plan/Agenda_80min.md`](01_plan/Agenda_80min.md) |
 | Grundlagen und Begriffe ansehen | [`03_architektur/Architektur_Grundlagen.md`](03_architektur/Architektur_Grundlagen.md) |
-| Gewählte Assembly-Architektur ansehen | [`03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`](03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md) |
+| Assembly-Kandidatenentwurf ansehen | [`03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`](03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md) |
+| AMR-Flottenarchitektur ansehen | [`03_architektur/Variante_C_AMR_Flotte_Architektur_v0.1.md`](03_architektur/Variante_C_AMR_Flotte_Architektur_v0.1.md) |
 | die Agenten-Orientierung lesen | [`Agent.md`](Agent.md) |
-| Scope-Entscheidung und offene Folgearbeit lesen | [`DDS_offene_Fragen.md`](DDS_offene_Fragen.md) |
+| Vergleichsauftrag und offene Folgearbeit lesen | [`DDS_offene_Fragen.md`](DDS_offene_Fragen.md) |
 | Quellen und Altmaterial finden | [`02_quellen/`](02_quellen/) |
 | die Ausarbeitung schreiben | [`05_unterlagen/`](05_unterlagen/) |
 | Folien bauen | [`06_folien/`](06_folien/) |
@@ -94,7 +97,7 @@ Die Projektmappe besteht aus:
 
 1. **Schriftliche Seminarunterlagen** — ohne weitere Zusatzliteratur nachvollziehbar, PDF mit hellem Hintergrund.
 2. **Foliensatz** — 4 Teile, gemeinsamer Master, 12 Minuten pro Person.
-3. **Architektur** — DDS-Referenzarchitektur mit vollständiger Instanziierung in der Assembly-Zelle und kurzem UMAA-Transfer.
+3. **Architektur** — DDS-Referenzarchitektur; Assembly-Zelle und AMR-Flotte werden verglichen, ein Kandidat wird danach vollständig instanziiert; UMAA dient als kurzer Transfer.
 4. **Demo** — minimales Fast-DDS-Beispiel mit IDL, Publisher, Subscriber und QoS-XML; Backup-Video als Fallback.
 5. **Q&A-Bank** — 20–30 vorbereitete Fragen inkl. Antworten.
 
@@ -135,11 +138,14 @@ Details und Bewertung jeder Datei: [`Agent.md`](Agent.md).
 
 | Entscheidung | Empfehlung |
 |---|---|
-| Projekt-Scope | **entschieden:** Assembly-Zelle als Hauptfall, UMAA als kurzer Transfer; Krankenhaus und autonomes Fahren ausgeschlossen |
-| Anteil A = Architektur-Kern + Beispiel | Ja |
-| Demo-Implementierung | Fast DDS (Alternative: Cyclone DDS) |
+| Anwendungsbeispiele | **Vergleich:** Assembly-Zelle und AMR-Flotte; UMAA kurzer Transfer, Hauptbeispiel-Auswahl noch offen |
+| Rollenaufteilung | **festgelegt:** A Architektur/Integration, B Automatisierung, C Qualitätsmerkmale, D Zukunft/DDS-spezifische Aspekte |
+| AMR-Umsetzungsprofil | direkte DDS-API ohne ROS 2; DDS-Implementierung noch offen |
+| AMR-Lizenzanforderung | FOSS; kommerzielle Erweiterungen nicht vorausgesetzt |
+| Vortragsformat | Folie 8 (alle Vorträge, dann Diskussion) ist Vorschlag; Formatentscheidung offen |
+| Demo-Implementierung | Fast DDS Community oder Cyclone DDS (FOSS-Kandidaten) |
 | Umfang der Unterlagen | 15–20 Seiten + Anhang |
-| Diskussionsformat | 4 × (12 min Vortrag + 8 min Diskussion), Alternative: 48 + 32 |
+| Diskussionsformat | 48 + 32 als Vorschlag aus Folie 8; 4 × (12 + 8) als Alternative; noch offen |
 | UML-Werkzeug | Visual Paradigm, Export PNG/SVG |
 | Genaues Zeitfenster am 11.01. | beim Lehrstuhl erfragen |
 
@@ -151,7 +157,7 @@ Details und Bewertung jeder Datei: [`Agent.md`](Agent.md).
 - [x] Zeitplan und Agenten-Orientierung
 - [x] Zwei Projektvarianten erarbeitet
 - [x] Krankenhausentwurf als ausgeschlossen markiert; Assembly-Architektur überarbeitet (v0.2)
-- [x] Exposé v0.1 und 80-Minuten-Agenda
+- [x] Exposé-Arbeitsstand auf Kandidatenvergleich und Rollen angepasst; Agenda entsprechend ausgerichtet, Diskussionsformat offen
 - [ ] Scope-Freeze
 - [ ] Architektur v1
 - [ ] Demo v1

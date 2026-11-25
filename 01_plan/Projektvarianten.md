@@ -3,9 +3,9 @@
 **Stand:** 22.11.2026  
 **Grundlage:** `sekm-seminar-2026.pdf`, `sekm-praktikum2026.pdf`, `DDS_alt/`, `01_plan/Timeline.md`
 
-> **Aktualisierte Scope-Entscheidung:** Variante B (Assembly-Zelle) bleibt das einzige vollständig ausgearbeitete Anwendungsbeispiel. UMAA für unbemannte maritime Fahrzeuge wird als kurzer Transferfall aufgenommen. Variante A (Krankenhaus) und autonomes Fahren sind nicht Teil des Vortrags. Die nachfolgende Krankenhausanalyse bleibt als frühere Planungs-/Vergleichsgrundlage erhalten, nicht als aktive Variante.
+> **Gültigkeit:** Dieses Dokument enthält den historischen Vergleich Krankenhaus vs. Assembly-Zelle. Er ist durch die Orga-Planung vom 15.11. und die spätere Arbeitsfestlegung überholt: Aktuell werden **Assembly-Zelle und AMR-Flotte** anhand der Rollenpakete verglichen; **UMAA** ist ein kurzer Transferfall. Welcher Kandidat das Hauptbeispiel wird, ist noch offen. Krankenhaus und Hausautomation werden nicht als Fallarchitektur ausgearbeitet.
 
-> **Hinweis zur Gültigkeit:** Die folgenden Variantendetails dokumentieren den früheren Auswahlprozess. Sie sind kein Ersatz für die aktuelle Architektur in `03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`; insbesondere QoS-Zahlen, Safety-Status und Teilnehmerannahmen dort nicht ungeprüft übernehmen.
+> **Hinweis zur Gültigkeit:** Die folgenden Variantendetails und Bewertungen dokumentieren den früheren Krankenhaus-vs.-Assembly-Auswahlprozess. Sie entscheiden nicht den aktuellen Vergleich Assembly-vs.-AMR. Die aktuelle Assembly-Kandidatenarchitektur liegt in `03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`; QoS-, Safety- und Teilnehmerannahmen dort bleiben Entwurf.
 
 > **Begriffsklärung:** „Projekt“ meint hier das **Seminarprojekt DDS** (Vortrag + Unterlagen + Demo). Das **Praktikum MPK** ist eine separate Abgabe; die DDS-Varianten liefern dafür höchstens Architekturvokabular und Demo-Erfahrung, keine gemeinsame Abgabe.
 
@@ -315,7 +315,7 @@ Eine modulare Roboter-Assembly-Zelle besteht aus Robotersteuerung, Vision, Motio
 
 - **Variante B** ist die bessere Wahl für die Bewertung: Sie erfüllt die Prof.-Vorgaben (Smart Factory/Motion Control, Echtzeit, TSN, Embedded, Security) und erlaubt echte eigene Hypothesen. Sie ist auch die konsequente Fortsetzung der bisherigen Planung (`Timeline.md`).
 - **Variante A** ist die schnellere und sicherere Variante, wenn das Team wenig Zeit hat oder bewusst an das Legacy-Material anknüpfen will. Dann muss die Eigenständigkeit aktiv abgesichert werden: neues Beispiel, neue Quellen, neue Diagramme, klare Abgrenzung.
-- **Aktualisierte Umsetzung:** Variante B als Hauptgeschichte; UMAA als knapper Transferbeleg. Die frühere Hybrididee mit dem Krankenhaus wird nicht umgesetzt.
+- **Historische Umsetzungsempfehlung:** Variante B als Hauptgeschichte; diese frühere Empfehlung ist durch den aktuellen Vergleich Assembly-Zelle vs. AMR-Flotte ersetzt.
 
 ---
 
@@ -326,7 +326,8 @@ Die ersten Mermaid-Strukturen liegen getrennt pro Variante:
 | Variante | Datei | Inhalt |
 |---|---|---|
 | Ausgeschlossener Entwurf — Krankenhaus | [`../03_architektur/Variante_A_Krankenhaus_Architektur_v0.1.md`](../03_architektur/Variante_A_Krankenhaus_Architektur_v0.1.md) | Historische Arbeitsgrundlage; nicht für den Vortrag verwenden |
-| Hauptbeispiel — Assembly-Zelle | [`../03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`](../03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md) | DDS-Kontext, Datenmodell, QoS-Hypothesen, Deployment, Security und UMAA-Transfer |
+| Kandidatenentwurf — Assembly-Zelle | [`../03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md`](../03_architektur/Variante_B_Assembly_Zelle_Architektur_v0.1.md) | Architekturentwurf eines Vergleichskandidaten; Hauptfallauswahl offen |
+| Kandidatenentwurf — AMR-Flotte | [`../03_architektur/Variante_C_AMR_Flotte_Architektur_v0.1.md`](../03_architektur/Variante_C_AMR_Flotte_Architektur_v0.1.md) | Architekturentwurf des zweiten Vergleichskandidaten; Hauptfallauswahl offen |
 
 Beide Dateien sind Entwürfe (v0.1) und noch nicht render-geprüft. Die QoS-Werte sind Diskussionsgrundlage, keine Messwerte.
 
@@ -334,18 +335,19 @@ Beide Dateien sind Entwürfe (v0.1) und noch nicht render-geprüft. Die QoS-Wert
 
 ## 4. Nächste Entscheidung
 
-**Aktualisiert:** Variante **B als Hauptbeispiel**, UMAA als kurzer Transfer. Krankenhaus und autonomes Fahren sind ausgeschlossen.
+**Aktueller Auftrag:** Assembly-Zelle und AMR-Flotte vergleichen; UMAA als kurzer Transfer. Die Auswahl des Hauptbeispiels ist offen.
 
 Erledigt:
 
-1. Hauptbeispiel bestätigt: **Assembly-Zelle**; UMAA als knapper Transferfall ergänzt.
-2. Beispielzelle und QoS-Tabelle aus B.2 in das Exposé übernommen.
-3. Krankenhausentwurf als nicht aktiven Entwurf gekennzeichnet; Assembly-Architektur weitergeführt.
+1. Vergleichsauftrag Assembly-Zelle vs. AMR-Flotte festgelegt; UMAA als knapper Transferfall ergänzt.
+2. Assembly-Kandidatenentwurf und erste QoS-Hypothesen im Exposé/Architekturdokument verfügbar.
+3. Krankenhausentwurf als nicht aktive historische Grundlage gekennzeichnet.
 
 Offen:
 
-4. Rollen A–D personell besetzen; 80-min-Agenda bestätigen (Format: Diskussion nach jedem Teil oder ein 32-min-Block).
-5. Quellenregister anlegen und Legacy-PDFs durch aktuelle OMG-Versionen ersetzen.
-6. Demo-Technologie entscheiden: Fast DDS oder Cyclone DDS.
+4. Vergleich aus den vier Rollenpaketen zusammenführen und Hauptbeispiel begründet auswählen.
+5. Reihenfolge und Diskussionsformat entscheiden; Folienvorschlag sieht alle Vorträge vor gemeinsamer Diskussion vor.
+6. Quellenregister anlegen und Legacy-PDFs durch aktuelle OMG-Versionen ersetzen.
+7. FOSS-DDS-Implementierung für AMR/Demo entscheiden: Fast DDS Community oder Eclipse Cyclone DDS; Lizenz- und Abhängigkeitsprüfung durchführen.
 
-**Begründung der Entscheidung:** maximale Passung zu den Prof.-Vorgaben (Smart Factory, Motion Control, Zeitverhalten, TSN, Embedded, Security), hohe Eigenständigkeit gegenüber dem Legacy-Material und ein klar begrenzter Transfer auf UMAA, ohne eine zweite Fallarchitektur aufzubauen.
+**Hinweis:** Die ältere Begründung für die Assembly-Zelle ist nicht als Ergebnis des aktuellen Assembly-vs.-AMR-Vergleichs zu lesen.
